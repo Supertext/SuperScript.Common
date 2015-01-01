@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="superScriptSchema"
+            targetNamespace="http://tempuri.org/schema.xsd"
+            attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            xmlns:mstns="http://tempuri.org/schema.xsd"
+            xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="superScript">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="declarations">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="arrays">
+                <xs:annotation>
+                  <xs:documentation>
+                    <![CDATA[<arrayElements>
+            <element value="2000" />
+            <element value="2001" />
+            <element value="2002" />
+            <element value="2002" />
+          </arrayElements>]]>
+                  </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="array">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="name"/>
+                            <xs:attribute type="xs:string" name="comment"/>
+                            <xs:attribute type="xs:string" name="elements"/>
+                            <xs:attribute type="xs:string" name="emitterKey"/>
+                            <xs:attribute type="xs:string" name="type"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="calls">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="call">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="parameters">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="parameter" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:extension base="xs:string">
+                                        <xs:attribute type="xs:string" name="value" use="optional"/>
+                                        <xs:attribute type="xs:string" name="type" use="optional"/>
+                                      </xs:extension>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute type="xs:string" name="functionName"/>
+                        <xs:attribute type="xs:string" name="comment"/>
+                        <xs:attribute type="xs:string" name="emitterKey"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="comment">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="text"/>
+                      <xs:attribute type="xs:string" name="emitterKey"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="variables">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="variable" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="name" use="optional"/>
+                            <xs:attribute type="xs:string" name="value" use="optional"/>
+                            <xs:attribute type="xs:string" name="comment" use="optional"/>
+                            <xs:attribute type="xs:string" name="emitterKey" use="optional"/>
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="emitters">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="emitter" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="attributes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="attribute">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute type="xs:string" name="name" use="optional"/>
+                                  <xs:attribute type="xs:string" name="value" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="converter">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute type="xs:string" name="type" use="optional"/>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="postModifiers" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="modifier" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:extension base="xs:string">
+                                  <xs:attribute type="xs:string" name="emitMode" use="optional"/>
+                                  <xs:attribute type="xs:string" name="type" use="optional"/>
+                                </xs:extension>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute type="xs:string" name="key" use="optional"/>
+                  <xs:attribute type="xs:string" name="isDefault" use="optional"/>
+                  <xs:attribute type="xs:string" name="tagName" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
