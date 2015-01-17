@@ -26,7 +26,7 @@ namespace SuperScript.Emitters
 
 
 		/// <summary>
-		/// Gets or sets a collection of instances of <see cref="IEmitter"/> which should have their emitted outputs bundled together.
+		/// Gets a collection of instances of <see cref="IEmitter"/> which should have their emitted outputs bundled together.
 		/// </summary>
 	    public IEnumerable<IEmitter> Emitters
 	    {
