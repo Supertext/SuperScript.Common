@@ -76,7 +76,7 @@ namespace SuperScript.ExtensionMethods
         {
             // if this declaration has already been added to the collection then remove it
 
-            if (string.IsNullOrWhiteSpace(declaration.Name))
+            if (collection == null || declaration == null || string.IsNullOrWhiteSpace(declaration.Name))
             {
                 return;
             }

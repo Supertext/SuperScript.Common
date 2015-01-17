@@ -206,12 +206,12 @@
         </member>
         <member name="P:SuperScript.Emitters.EmitterBundle.EmitterKeys">
             <summary>
-            
+            Gets or sets the <see cref="P:SuperScript.Emitters.IEmitter.Key"/> for each <see cref="T:SuperScript.Emitters.IEmitter"/> in the bundle.
             </summary>
         </member>
         <member name="P:SuperScript.Emitters.EmitterBundle.Emitters">
             <summary>
-            Gets or sets a collection of instances of <see cref="T:SuperScript.Emitters.IEmitter"/> which should have their emitted outputs bundled together.
+            Gets a collection of instances of <see cref="T:SuperScript.Emitters.IEmitter"/> which should have their emitted outputs bundled together.
             </summary>
         </member>
         <member name="P:SuperScript.Emitters.EmitterBundle.CustomObject">

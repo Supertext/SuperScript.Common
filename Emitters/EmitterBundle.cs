@@ -20,7 +20,7 @@ namespace SuperScript.Emitters
         #region Public Properties
 
 		/// <summary>
-		/// 
+		/// Gets or sets the <see cref="SuperScript.Emitters.IEmitter.Key"/> for each <see cref="SuperScript.Emitters.IEmitter"/> in the bundle.
 		/// </summary>
 		public IEnumerable<string> EmitterKeys { get; set; }
 
