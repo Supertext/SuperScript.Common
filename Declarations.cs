@@ -56,6 +56,12 @@ namespace SuperScript
             {
                 throw new CollectionNotInstantiatedException();
             }
+
+            if (declaration == null)
+            {
+                return null;
+            }
+
             // if this variable has already been declared then remove it from the collection
             Collection.RemoveDuplicates(declaration);
 
@@ -84,7 +90,7 @@ namespace SuperScript
 			    throw new CollectionNotInstantiatedException();
 		    }
 
-		    foreach (var declaration in declarations)
+		    foreach (var declaration in declarations.Where(d => d != null))
 		    {
 			    // if this variable has already been declared then remove it from the collection
 			    Collection.RemoveDuplicates(declaration);
@@ -197,7 +203,7 @@ namespace SuperScript
 		    }
 
 			// retrieve the specified declarations from the static collection of declarations
-		    var specDecs = Collection.Where(dec => declarationNames.Contains(dec.Name)).ToArray();
+		    var specDecs = Collection.Where(dec => dec != null && declarationNames.Contains(dec.Name)).ToArray();
 
 		    // and then remove them from the Collection so that they won't be rendered again (should the Emitter be emitted)
 		    foreach (var specDec in specDecs)

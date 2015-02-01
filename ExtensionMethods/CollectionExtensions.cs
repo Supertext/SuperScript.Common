@@ -81,7 +81,7 @@ namespace SuperScript.ExtensionMethods
                 return;
             }
 
-            foreach (var existingDecl in collection.Where(d => d.Name == declaration.Name).ToArray())
+            foreach (var existingDecl in collection.Where(d => d != null && d.Name != null && d.Name == declaration.Name).ToArray())
             {
                 collection.Remove(existingDecl);
             }
