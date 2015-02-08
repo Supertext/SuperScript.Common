@@ -1,7 +1,0 @@
-*.user
-*.vspscc
-*.DotSettings
-*.nupkg
-*.cache
-documentation/img/Thumbs.db
-NuGet/
