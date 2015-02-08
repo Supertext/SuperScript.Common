@@ -1,0 +1,14 @@
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\Antlr3.Runtime.dll
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\Newtonsoft.Json.dll
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\WebGrease.dll
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\Antlr3.Runtime.pdb
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\Newtonsoft.Json.xml
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\obj\Release\SuperScript.Common.csprojResolveAssemblyReference.cache
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\HtmlAgilityPack.dll
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\HtmlAgilityPack.pdb
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\HtmlAgilityPack.xml
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\SuperScript.Common.dll.config
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\SuperScript.Common.dll
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\bin\Release\SuperScript.Common.pdb
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\obj\Release\SuperScript.Common.dll
+C:\Users\Andrew\Documents\Visual Studio 2012\Projects\SuperScriptLibrary\SuperScript.Common\obj\Release\SuperScript.Common.pdb
