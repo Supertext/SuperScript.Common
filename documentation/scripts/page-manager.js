@@ -1,11 +1,12 @@
 var PageManager = function (win, doc) {
 
 	var self = this,
-		projectName = "SuperScript.JavaScript",
+		location = doc.location,
+		projectName = location.href.split("/")[3],
 		issueUrl = "https://github.com/Supertext/" + projectName + "/issues/new",
-		urlSegments = doc.location.pathname.split("/"),
+		urlSegments = location.pathname.split("/"),
 		removeLastSegment = urlSegments.pop(),
-		urlDirectory = doc.location.protocol + "//" + doc.location.host + urlSegments.join("/") + "/documentation/",
+		urlDirectory = location.protocol + "//" + location.host + urlSegments.join("/") + "/documentation/",
 		escapeRegExp = function (string) {
     			return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 		},
