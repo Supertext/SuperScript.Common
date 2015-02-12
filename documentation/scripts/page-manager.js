@@ -49,8 +49,8 @@ var PageManager = function (win, doc) {
 		};
 
 	return {
-		"Init": function () {
-			configureRouting;
+		"Init": function() {
+			configureRouting();
 		}
 	};
 }(window, window.document);
