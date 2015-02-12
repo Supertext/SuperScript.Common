@@ -46,11 +46,22 @@ var PageManager = function (win, doc) {
 								elmntLi.parents("li.dropdown").addClass("active");
 							}
 					});
+		},
+		init = function() {
+			var elmntJumbotron = document.getElementsByClassName("jumbotron");
+			if (elmntJumbotron.length > 0) {
+				var elmntH1 = elmntJumbotron[0].getElementsByTagName("h1");
+				if (elmntH1.length > 0) {
+					elmntH1[0].innerHTML = projectName;
+				}
+			}
+			doc.title = projectName + " Documentation"
 		};
 
 	return {
 		"Init": function() {
 				configureRouting();
+				init();
 		}
 	};
 }(window, window.document);
