@@ -49,13 +49,15 @@ var PageManager = function (win, doc) {
 		};
 
 	return {
-		"setupRouteHandler": configureRouting
+		"Init": function() {
+					configureRouting();
+				);
 	};
 }(window, window.document);
 
 
 $(function() {
-	PageManager.setupRouteHandler();
+	PageManager.Init();
 	Routing.root("#!/page/index");
 	Routing.listen();
 	
