@@ -1,0 +1,134 @@
+<h2>The Pre-Conversion Modifier</h2>
+
+<p>
+    <em>It is recommended to read about modifiers prior to reading the detail on this page. Read about modifiers <a href="modifiers.html">here</a>.</em>
+</p>
+
+<p>
+    The first stage in the emitter pipeline is passed an instance of <abbr title="SuperScript.Modifiers.PreModifierArgs"><code>PreModifierArgs</code></abbr>
+    and returns an instance of the same type.
+</p>
+
+<img src="../img/core-2.gif" alt="Emitters can be thought of as a pipeline through which declarations are passed" class="center-block gutter-bottom" />
+
+<p class="small text-center">
+    The above image demonstrates how a <abbr tite="SuperScript.Modifiers.Pre.CollectionPreModifier"><code>CollectionPreModifier</code></abbr>
+    is the first modifying stage in the emitter pipeline, and that its output is presented to a
+    <abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr> (or an additional
+    <abbr tite="SuperScript.Modifiers.Pre.CollectionPreModifier"><code>CollectionPreModifier</code></abbr>).
+</p>
+
+<p>
+    Multiple implementations of <abbr tite="SuperScript.Modifiers.Pre.CollectionPreModifier"><code>CollectionPreModifier</code></abbr> may
+    be added to an <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>. Because the 
+    <abbr tite="SuperScript.Modifiers.Pre.CollectionPreModifier"><code>CollectionPreModifier</code></abbr> takes and returns the same object,
+    they may be <em>stacked</em> in a pre-determined order, with the output from one being the input to the next.
+</p>
+
+<h3 id="collection-pre-modifier-members">CollectionPreModifier Members</h3>
+
+<pre class="brush: c#">
+    abstract class SuperScript.Modifiers.Pre.CollectionPreModifier
+    {
+        abstract PreModifierArgs Process(PreModifierArgs args);
+        bool UseWhenBundled { get; set; }
+    }
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>Process</td>
+        <td><abbr title="SuperScript.Modifiers.PreModifierArgs"><code>PreModifierArgs</code></abbr></td>
+        <td>
+            <p>
+                Executes this instance of <abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr>
+                upon the specified <abbr title="SuperScript.Modifiers.PreModifierArgs"><code>PreModifierArgs</code></abbr>.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>UseWhenBundled</td>
+        <td>bool</td>
+        <td>
+            <p>
+                Gets or sets whether this <abbr title="SuperScript.Modifiers.Pre.CollectionPreModifier"><code>CollectionPreModifier</code></abbr>
+                should be implemented when its parent <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> is referenced by a
+                <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr>.
+            </p>
+            <p>
+                Read more about emitter bundles <a href="">here</a>.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<h3 id="pre-modifier-args-members">PreModifierArgs Members</h3>
+
+<pre class="brush: c#">
+    class SuperScript.Modifiers.PreModifierArgs
+    {
+        object CustomObject { get; set; }
+        IEnumerable&lt;DeclarationBase&gt; Declarations { get; set; }
+        bool IsDebug { get; }
+    }
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>CustomObject</td>
+        <td>object</td>
+        <td>
+            <p>
+                This property allows the user to pass any required object through the conversion process.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>Declarations</td>
+        <td><abbr title="IEnumerable&lt;SuperScript.Declarables.DeclarationBase&gt;"><code>IEnumerable&lt;DeclarationBase&gt;</code></abbr></td>
+        <td>
+            <p>
+                The collection of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects to be processed.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>IsDebug</td>
+        <td>bool</td>
+        <td>
+            <p>
+                Gets a value indicating whether the current HTTP request is in debug mode.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+<h2>What Next?</h2>
+
+<p>
+    Read about collection converters <a href="collection-converter.html">here</a>.
+</p>
+
+<p>
+    Read about post-conversion modifiers <a href="collection-post-modifier.html">here</a>.
+</p>
+
+<p>
+    Read about HTML writers <a href="html-writer.html">here</a>.
+</p>
