@@ -1,0 +1,135 @@
+<h2>The HTML Writer</h2>
+
+<p>
+    <em>It is recommended to read about modifiers prior to reading the detail on this page. Read about modifiers <a href="modifiers.html">here</a>.</em>
+</p>
+
+<p>
+    The responsibility of an <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr> is to write <em>an</em>
+    emitted output to the webpage. It achieves this by taking a <code>string</code> (the output of a
+    <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>) and returning an
+    <abbr title="System.Web.IHtmlString"><code>IHtmlString</code></abbr>.
+</p>
+
+<img src="../img/core-2.gif" alt="Emitters can be thought of as a pipeline through which declarations are passed" class="center-block gutter-bottom" />
+
+<p class="small text-center">
+    The above image shows that the <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr> is implemented
+    in the final stage of the emitter pipeline.
+</p>
+
+<p>
+    There is no requirement that an <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr>
+    must write the <code>string</code> that was passed to it by a
+    <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>; different implementations
+    of <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr> may choose to do something different
+    with the passed-in content.
+</p>
+
+<p>
+    For example, this stage could write the passed string to the local file system as a <em>*.js</em> file, then write a
+    <code>&lt;script src="&hellip;"&gt;</code> tag to the webpage which references the created <em>*.js</em> file.
+</p>
+
+
+
+<h3 id="html-writer-members">HtmlWriter Members</h3>
+
+<pre class="brush: c#">
+        abstract class SuperScript.Modifiers.Writers.HtmlWriter
+        {
+            abstract IHtmlString Process(PostModifierArgs args);
+        }
+    </pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>Process</td>
+        <td>IHtmlString</td>
+        <td>
+            <p>
+                Executes this instance of <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr>
+                upon the collection of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>
+                objects.
+            </p>
+            <p>
+                Returns an implementation-specific instance of <abbr title="System.Web.IHtmlString"><code>IHtmlString</code></abbr>.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+<h3 id="post-modifier-args-members">PostModifierArgs Members</h3>
+
+<pre class="brush: c#">
+    class SuperScript.Modifiers.PostModifierArgs
+    {                        
+        object CustomObject { get; set; }
+        string Emitted { get; set; }
+        bool IsDebug { get; }
+    }
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>CustomObject</td>
+        <td>object</td>
+        <td>
+            <p>
+                This property allows the user to pass any required object through the conversion process.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>Emitted</td>
+        <td>string</td>
+        <td>
+            <p>
+                Expected to be the output of a <abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr>
+                or a previous instance of <abbr title="SuperScript.Modifiers.PostModifierArgs"><code>PostModifierArgs</code></abbr>.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>IsDebug</td>
+        <td>bool</td>
+        <td>
+            <p>
+                Gets a value indicating whether the current HTTP request is in debug mode.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<h2>What Next?</h2>
+
+<p>
+    Read about pre-conversion modifiers <a href="collection-pre-modifier.html">here</a>.
+</p>
+
+<p>
+    Read about collection converters <a href="collection-converter.html">here</a>.
+</p>
+
+<p>
+    Read about post-conversion modifiers <a href="collection-post-modifier.html">here</a>.
+</p>
