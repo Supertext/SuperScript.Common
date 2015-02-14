@@ -15,37 +15,38 @@ var PageManager = function (win, doc) {
 		}
 	
 		configureRouting = function() {
-			Routing.map("#!/:contentName")
-					.before(function() {
-						$("#content").html("<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />");
-						$("li.active").removeClass("active");
-					})
-					.to(function() {
+			Routing.map("#!/:contentName(/:anchor)")
+				.before(function() {
+					$("#content").html("<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />");
+					$("li.active").removeClass("active");
+				})
+				.to(function() {
+					var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
+						anchor = this.params.anchor,
+						loadUrl = urlDirectory + specificPath,
+						elmntLink = $("a[href='#!/page/" + this.params.contentName.value + "']");
 						
-							var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
-								loadUrl = urlDirectory + specificPath,
-								elmntLink = $("a[href='#!/page/" + this.params.contentName.value + "']");
-								
-							$.ajax({
-								dataType: "html",
-								type: "GET",
-								url: loadUrl,
-								success: function (data) {
-									$("#content").html(data);
-									
-									SyntaxHighlighter.highlight();
-								},
-								error: function (xmlHttpRequest, textStatus, errorThrown) {
-									$("#content").html("<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>");
-								}
-							});
+						console.log(anchor);
+					$.ajax({
+						dataType: "html",
+						type: "GET",
+						url: loadUrl,
+						success: function (data) {
+							$("#content").html(data);
 							
-							if (elmntLink.length > 0) {
-								var elmntLi = elmntLink.parent("li");
-								elmntLi.addClass("active");
-								elmntLi.parents("li.dropdown").addClass("active");
-							}
+							SyntaxHighlighter.highlight();
+						},
+						error: function (xmlHttpRequest, textStatus, errorThrown) {
+							$("#content").html("<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>");
+						}
 					});
+					
+					if (elmntLink.length > 0) {
+						var elmntLi = elmntLink.parent("li");
+						elmntLi.addClass("active");
+						elmntLi.parents("li.dropdown").addClass("active");
+					}
+				});
 		};
 
 	return {
@@ -54,7 +55,6 @@ var PageManager = function (win, doc) {
 		}
 	};
 }(window, window.document);
-
 
 $(function() {
 	PageManager.Init();
