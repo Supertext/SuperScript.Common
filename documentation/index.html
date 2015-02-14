@@ -1,0 +1,87 @@
+<h2><a id="what-does-it-do">What Does It Do?</a></h2>
+
+<p>
+    SuperScript has been built as a flexible, modular set of libraries, each offering slightly different functionality, often building on top of
+    other SuperScript modules. Consequently, the easiest way to explain what SuperScript does is to use some examples.
+</p>
+
+<p>
+    SuperScript has two aspects:
+</p>
+
+<h4>Declarations</h4>
+<p>
+    A <em>declaration</em> refers to a type of object which you describe to SuperScript, and which you will later ask SuperScript to return in a different form.
+</p>
+<p>
+    Some examples might include
+</p>
+<ul>
+    <li>
+        JavaScript variables or function calls declared in server-side code, or a <code>&lt;script&gt;</code> block on a WebForms <em>.aspx</em> file
+        or an MVC Razor view
+    </li>
+    <li>
+        HTML templates declared in server-side code, or a <code>&lt;script&gt;</code> block on a WebForms <em>.aspx</em> file
+        or an MVC Razor view
+    </li>
+</ul>
+<p>
+    The base declaration is easily extendable to cover any other concerns.
+</p>
+<p>
+    For example, supposing a developer plans to write their entire CSS in the webpage's <code>&lt;head&gt;</code> section, yet the selecters
+    were declared throughout their server-side application: a declaration could be derived which allows the developer to programmatically (or using a
+    container control) declare their CSS selecters to SuperScript, thus <em>gathering up</em> all these selecters into a single collection.
+</p>
+
+<h4>Emissions</h4>
+<p>
+    An <em>emitter</em> is an object which renders one or more declarations in a pre-determined way and in a specific location.
+</p>
+<p>
+    For example
+</p>
+<ul>
+    <li>
+        Placing all JavaScript declarations at an optimal location on a webpage
+    </li>
+    <li>
+        Moving declarations into an external file and writing a <code>&lt;script&gt;</code> tag on the webpage
+    </li>
+</ul>
+<p>
+    The emitting of declarations is the act of rendering specific declarations, groups of similarly-processed declarations, or <em>all</em>
+    declarations in an optimal place.
+</p>
+<p>
+    For example, by declaring JavaScript variables against a JavaScript-specific emitter, all JavaScript variables may be emitted in a
+    specific location, typically immediately before the <code>&lt;/body&gt;</code> tag.
+</p>
+<p>
+    Furthermore, emitters also offer processing functionality which offers opportunities for modifying the collection of declarations, or
+    per-compiling HTML templates.
+</p>
+
+<p>
+    Read more about emitters <a href="emitters/emitters.html">here</a>, though you should probably read about the <a href="core-concepts.html">core concepts</a> first.
+</p>
+
+
+<h2>Where Next?</h2>
+
+<p>
+    SuperScript offers a variety of functionality and consequently consists of multiple, optional libraries. This page lists each of the current
+    projects along with a brief explanationof the functionality offered.
+</p>
+<p>
+    <a href="current-projects.html">View the current projects</a>
+</p>
+
+<p>
+    Although SuperScript's functionality is divided across multiple libraries, the fundamentals are common to each. This page explains the core
+    concepts behind SuperScript.
+</p>
+<p>
+    <a href="core-concepts.html">Read an explanation of the core concepts</a>
+</p>
