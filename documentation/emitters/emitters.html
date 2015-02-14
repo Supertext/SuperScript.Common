@@ -1,0 +1,222 @@
+<h2>The Emitter</h2>
+
+<p>
+    Along with <a href="../declarations/declarations.html">declarables</a>, emitters are a core concept of SuperScript.
+</p>
+
+<h3>What is an Emitter?</h3>
+
+<p>
+    As described in <a href="../core-concepts.html#emitting-declarations">Core Concepts</a>, an emitter can be thought of as a pipeline which
+    deals with the converting of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>
+    instances into their client-side form.
+</p>
+
+<p>
+    An emitter may be thought of as a pipeline consisting of objects which can modify the declarations, and then write the output
+    to the webpage. An emitter is passed a collection of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects, and the end of the process returns an
+    <abbr title="System.Web.IHtmlString"><code>IHtmlString</code></abbr> which contains the output of each declaration passed to this emitter.
+</p>
+
+<img src="../img/core-2.gif" alt="Emitters can be thought of as a pipeline through which declarations are passed" class="center-block gutter-bottom" />
+
+<p class="small text-center">
+    The figure above shows that emitters can be thought of as a pipeline through which declarations are passed and whose result is an <code>IHtmlString</code>
+    representing the client-side form of those declarations.
+</p>
+
+
+<h3>Modifiers</h3>
+
+<p>
+    This documentation frequently refers to <em>modifiers</em>, which is simply a collective term for the classes involved in each stage of an emitter's
+    processing. To be clear, and in reference to the above diagram, here are the definitions for each of the available <em>modifiers</em>.
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Emitter stage</td>
+            <td>Class implemented</td>
+        </tr>
+    </thead>
+    <tr>
+        <td>Pre-modification</td>
+        <td><abbr title="SuperScript.Modifiers.Converters.CollectionPreModifier"><code>ICollection&lt;SuperScript.Modifiers.Converters.CollectionPreModifier&gt;</code></abbr></td>
+    </tr>
+    <tr>
+        <td>Declaration conversion</td>
+        <td><abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>SuperScript.Modifiers.Converters.CollectionConverter</code></abbr></td>
+    </tr>
+    <tr>
+        <td>Post-modification</td>
+        <td><abbr title="SuperScript.Modifiers.Pre.CollectionPostModifier"><code>ICollection&lt;SuperScript.Modifiers.Pre.CollectionPostModifier&gt;</code></abbr></td>
+    </tr>
+    <tr>
+        <td>HTML writing</td>
+        <td><abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>SuperScript.Modifiers.Writers.HtmlWriter</code></abbr></td>
+    </tr>
+</table>
+
+
+
+<h3>IEmitter Members</h3>
+
+<p>
+    An <em>emitter</em> is an instance of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>.
+</p>
+
+<pre class="brush: c#">
+    interface SuperScript.Emitters.IEmitter
+    {
+        object CustomObject { get; set; }
+        bool IsDefault { get; set; }
+        string Key { get; set; }
+        IHtmlString ToHtmlString(IEnumerable&lt;DeclarationBase&gt; declarations);
+        CollectionConverter Converter { get; set; }
+        ICollection&lt;CollectionPreModifier&gt; PreModifiers { get; set; }
+        ICollection&lt;CollectionPostModifier&gt; PostModifiers { get; set; }
+        HtmlWriter HtmlWriter { get; set; }
+    }
+</pre>
+
+<p>
+    Let's take a look at each of the members on the <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> interface.
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>CustomObject</td>
+        <td>object</td>
+        <td>
+            <p>
+                This property allows the user to pass any required object through the modification and conversion process.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>IsDefault</td>
+        <td>bool</td>
+        <td>
+            <p>
+                Each declaration should have details of the emitter which should process and render its client-side form. This should be specified
+                on the declaration's <abbr title="SuperScript.Declarables.DeclarationBase.EmitterKey"><code>EmitterKey</code></abbr> property.
+            </p>
+            <p>
+                However, by not specifying a value for <abbr title="SuperScript.Declarables.DeclarationBase.EmitterKey"><code>EmitterKey</code></abbr>
+                SuperScript will automatically provide the key for the default emitter.
+            </p>
+            <p>
+                The default emitter is the <em>first</em> emitter in the collection with <abbr title="SuperScript.Emitters.IEmitter.IsDefault"><code>IsDefault</code></abbr>
+                set to <code>true</code>; if none have this value explicitly set then the default emitter is the first emitter in the
+                <abbr title="SuperScript.Declarations.Emitters"><code>Emitters</code></abbr> collection.
+            </p>
+            <p>
+                <strong>Important:</strong> to allow SuperScript to fall back on the key of the default emitter (which is not the case when a key is
+                explicitly specified) the emitters <u>must</u> have been specified prior to the declaration being added to the collection.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>Key</td>
+        <td>string</td>
+        <td>
+            <p>
+                This is the value by which an emitter is identified by declarations, and when an emitter is requested to emit its
+                declared contents (<em>the client-side form of all declarations specifying this emitter</em>).
+            </p>
+            <p>
+                Given that the <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> is essentially an identifier for an emitter, each emitter must
+                have a unique <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr>.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>ToHtmlString</td>
+        <td>IHtmlString</td>
+        <td>
+            <p>
+                When called, this method emits the client-side form of the specified declarations.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>Converter</td>
+        <td><abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr></td>
+        <td>
+            <p>
+                The implementation of <abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr> which has been assigned to this emitter.
+            </p>
+            <p>
+                A <abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr> is <strong>not required</strong>
+                for an emitter.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>PreModifiers</td>
+        <td><abbr title="SuperScript.Modifiers.Converters.CollectionPreModifier"><code>ICollection&lt;CollectionPreModifier&gt;</code></abbr></td>
+        <td>
+            <p>
+                The implementations of <abbr title="SuperScript.Modifiers.Converters.CollectionPreModifier"><code>CollectionPreModifier</code></abbr>
+                which have been assigned to this emitter.
+            </p>
+            <p>
+                A <abbr title="SuperScript.Modifiers.Converters.CollectionPreModifier"><code>CollectionPreModifier</code></abbr> is <strong>not required</strong>
+                for an emitter.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>PostModifiers</td>
+        <td><abbr title="SuperScript.Modifiers.Pre.CollectionPostModifier"><code>ICollection&lt;CollectionPostModifier&gt;</code></abbr></td>
+        <td>
+            <p>
+                The implementations of <abbr title="SuperScript.Modifiers.Pre.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>
+                which have been assigned to this emitter.
+            </p>
+            <p>
+                A <abbr title="SuperScript.Modifiers.Pre.CollectionPostModifier"><code>CollectionPostModifier</code></abbr> is <strong>not required</strong>
+                for an emitter.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>HtmlWriter</td>
+        <td><abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr></td>
+        <td>
+            <p>
+                The implementation of <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr>
+                which has been assigned to this emitter.
+            </p>
+            <p>
+                An <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr> <strong>is required</strong>
+                for an emitter.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<h2>What Next?</h2>
+
+<p>
+    Read about creating and configuring an emitter <a href="create-emitter.html">here</a>.
+</p>
+
+<p>
+    Read about emitting the declarations from an emitter <a href="emitting.html">here</a>.
+</p>
+
+<p>
+    Read about declarations <a href="../declarations/declarations.html">here</a>.
+</p>
