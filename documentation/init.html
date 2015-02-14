@@ -1,0 +1,76 @@
+<h2><a id="init">Initialisation</a></h2>
+
+<p>
+  In order for SuperScript's internal properties to be initialised for each HTTP request, an additional
+  step must be taken: for each HTTP request the following properties must be instantiated:
+</p>
+
+<ul>
+  <li>
+    <p>
+      <abbr title="SuperScript.Declarations.Collection"><code>SuperScript.Declarations.Collection</code></abbr>
+    </p>
+  </li>
+  <li>
+    <p>
+      <abbr title="SuperScript.Declarations.Emitters"><code>SuperScript.Declarations.Emitters</code></abbr>
+    </p>
+  </li>
+  <li>
+    <p>
+      <abbr title="SuperScript.Declarations.EmitterBundles"><code>SuperScript.Declarations.EmitterBundles</code></abbr>
+    </p>
+  </li>
+</ul>
+
+<p>
+  To achieve this initialisation the following code must be included:
+</p>
+
+<pre class="brush: c#">
+  // Initialise the collection of Declarations for this request
+  SuperScript.Declarations.Collection = new Collection&lt;SuperScript.Declarables.DeclarationBase&gt;();
+
+  // Set all instances of BundledEmitter
+  SuperScript.Declarations.EmitterBundles = SuperScript.Configuration.Settings.Instance.EmitterBundles;
+
+  // Set all instances of IEmitter
+  SuperScript.Declarations.Emitters = SuperScript.Configuration.Settings.Instance.Emitters;
+</pre>
+
+<p>
+  There are two recommended methods for achieving this.
+</p>
+
+<h3 id="config-init">Config File</h3>
+
+<p>
+  An HTTP handler with the above code is already included inside SuperScript.Common. To enlist this 
+  HTTP handler the following code should be added to the web.config file:
+</p>
+
+<pre class="brush: xml">
+  &lt;httpModules&gt;
+    &lt;add name="HttpInitialiser" type="SuperScript.HttpInitialiser, SuperScript.Common" /&gt;
+  &lt;/httpModules&gt;
+</pre>
+
+<h3 id="global-init">Global.asax</h3>
+
+<p>
+  An alternative is to use the <code>Application_BeginRequest</code> event in the project's global.asax file.
+</p>
+
+<pre class="brush: c#">
+  private void Application_BeginRequest(object sender, EventArgs e)
+  {
+    // Initialise the collection of Declarations for this request
+    SuperScript.Declarations.Collection = new Collection&lt;SuperScript.Declarables.DeclarationBase&gt;();
+
+    // Set all instances of BundledEmitter
+    SuperScript.Declarations.EmitterBundles = SuperScript.Configuration.Settings.Instance.EmitterBundles;
+
+    // Set all instances of IEmitter
+    SuperScript.Declarations.Emitters = SuperScript.Configuration.Settings.Instance.Emitters;
+  }
+</pre>
