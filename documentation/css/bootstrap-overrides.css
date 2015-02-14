@@ -22,6 +22,10 @@ footer p {
     margin-bottom: 0;
 }
 
+footer img {
+	height: 25px;	
+}
+
 footer img[alt='Brand'] {
     margin: 7px 0 10px;
 }
