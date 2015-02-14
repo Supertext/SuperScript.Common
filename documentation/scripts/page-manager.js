@@ -15,7 +15,7 @@ var PageManager = function (win, doc) {
 		}
 	
 		configureRouting = function() {
-			Routing.map("#!/page/:contentName")
+			Routing.map("#!/:contentName")
 					.before(function() {
 						$("#content").html("<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />");
 						$("li.active").removeClass("active");
