@@ -1,0 +1,96 @@
+<h2>The Default Emitter</h2>
+
+<p>
+    This page assumes that readers are already familiar with the <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr>. If not
+    then <a href="http://supertext.github.io/SuperScript/emitters/emitters.html">this page</a> should be read before proceeding.
+</p>
+
+<p>
+    All SuperScript declarations (<em>i.e.</em>, instances of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>) reference
+    an instance of <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> (by its <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> property). 
+    However, when making a declaration, it is possible to omit an emitter <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr>.
+</p>
+
+<p>
+    In such cases, when not emitter <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> is specified, SuperScript will instead 
+    reference the <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> of the <em>default emitter</em>.
+</p>
+
+<h3>What is the <em>default emitter</em>?</h3>
+
+<p>
+    The simple answer to this question is <em>the <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> which will 
+    be used when no <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> is referenced</em>.
+</p>
+
+<p>
+    So how does an <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> become the <em>default emitter</em>?
+</p>
+
+<p>
+    There are two ways in which an <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> may become the <em>default emitter</em>:
+</p>
+
+<ol>
+    <li>
+        <p>
+            Specifying <abbr title="SuperScript.Emitters.IEmitter.IsDefault"><code>IsDefault = true</code></abbr>.
+        </p>
+        <p>
+            When specifying an <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> in the config file, this
+            is achieved through the <code>isDefault</code> attribute on the <code>&lt;emitter&gt;</code> element.
+        </p>
+        <pre class="brush: xml">
+            &lt;superScript&gt;
+                &lt;emitters&gt;
+                    &lt;emitter key="[YOUR EMITTER KEY]" isDefault="true"&gt;
+                    &hellip;
+                    &lt;/emitter&gt;
+                &t;/emitters&gt;
+            &lt;/superScript&gt;
+        </pre>
+        <p>
+            If multiple instances of <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> have 
+            <abbr title="SuperScript.Emitters.IEmitter.IsDefault"><code>IsDefault</code></abbr> set to <code>true</code>, the first
+            such <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> will be recognised as the <em>default emitter</em>.
+        </p>
+    </li>
+    <li>
+        <p>
+            If no <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> has 
+            <abbr title="SuperScript.Emitters.IEmitter.IsDefault"><code>IsDefault</code></abbr> set to <code>true</code> then the 
+            first <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> in the 
+            <abbr title="SuperScript.Declarations.Emitters"><code>Emitters</code</abbr> collection will be recognised as the 
+            <em>default emitter</em>.
+        </p>
+    </li>
+</ol>
+
+<p>
+    It is possible to obtain the <em>default emitter</em> at any point in the project by calling
+</p>
+
+<pre class="brush: c#">
+    IEmitter SuperScript.Configuration.Settings.DefaultEmitter { get; }
+</pre>
+
+<p>
+    The above read-only property can throw two exceptions which should be handled.
+</p>
+
+<dl>
+    <dt>CollectionNotInstantiatedException</dt>
+    <dd>
+        <p>
+            Thrown if the <abbr title="SuperScript.Configuration.Settings.Emitters"><code>Emitters</code></abbr> collection property has 
+            not been instantiated. This should be done for each HTTP request. See <a href="http://supertext.github.io/SuperScript/init.html">here</a> for 
+            more information on initialisation.
+        </p>
+    </dd>
+    <dt>NoEmittersConfiguredException</dt>
+    <dd>
+        <p>
+            Thrown if no instances of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> have been configured.
+        </p>
+    </dd>
+</dl>
