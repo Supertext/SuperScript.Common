@@ -24,14 +24,15 @@ var PageManager = function (win, doc) {
 					var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
 						anchor = this.params.anchor.value,
 						loadUrl = urlDirectory + specificPath,
-						elmntLink = $("a[href='#!/page/" + this.params.contentName.value + "']");
+						elmntContent = doc.getElementById("content"),
+						elmntLink = $("a[href='#!/" + this.params.contentName.value + "']");
 						
 					$.ajax({
 						dataType: "html",
 						type: "GET",
 						url: loadUrl,
 						success: function (data) {
-							$("#content").html(data);
+							$(elmntContent).html(data);
 							
 							SyntaxHighlighter.highlight();
 							
@@ -46,6 +47,8 @@ var PageManager = function (win, doc) {
 							$("#content").html("<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>");
 						}
 					});
+					
+					elmntContent.className = elmntContent.className + " " + this.params.contentName.value;
 					
 					if (elmntLink.length > 0) {
 						var elmntLi = elmntLink.parent("li");
