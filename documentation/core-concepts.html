@@ -1,0 +1,150 @@
+<h2>Core Concepts</h2>
+
+<p>
+    The <a href="index.html#what-does-it-do">What Does It Do?</a> section explained that SuperScript allows developers to make declarations from
+    almost anywhere in their server-side web application - programmatically or in container controls in a WebForms <em>.aspx</em> file or MVC
+    Razor view.
+</p>
+
+<p>
+    This page will build upon that simple explanation and discuss the fundamental mechanisms of SuperScript. Although that first explanation
+    describes the two aspects of SuperScript, it is actually a three-stage process:
+</p>
+
+<ol>
+    <li><a href="#adding-declarations">adding declarations</a></li>
+    <li><a href="#processing-declarations">processing an emitter's declarations</a></li>
+    <li><a href="#emitting-declarations">writing the output of the emitter</a></li>
+</ol>
+
+<h3 id="adding-declarations">Adding Declarations</h3>
+
+<p>
+    SuperScript allows developers to make declarations, whatever these might be: a JavaScript variable is a simple, convenient example.
+    These declarations are added to a central, application-wide collection of all declarations.
+</p>
+
+<img src="img/core-1.gif" alt="Wherever declarations are made, they are added to the same collection" class="center-block gutter-bottom" />
+
+<p class="small text-center">
+    The figure above shows that wherever declarations are made, they are all added to the same collection, <code>SuperScript.Declarations.Collection</code>.
+</p>
+
+<p>
+    Throughout the lifecycle of an HTTP request declarations of various types may be added to this single collection, ready to be emitted in a location of
+    the developer's choosing. Declarations may be added to this collection directly (as well as removed or modified) or via helper methods for specific
+    declaration types.
+</p>
+
+<p>
+    A <i>declarable</i> is simply an instance of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>SuperScript.Common.Declarables.DeclarationBase</code></abbr>.
+    The content of the declaration can be many things, depending upon the implementation of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>.
+    For example, <a href="https://github.com/Supertext/SuperScript.Templates" target="_blank">SuperScript.Templates</a> allows a client-side HTML template to be declared.
+</p>
+
+<p>
+    The central collection of declarations is an <abbr title="IList<SuperScript.Declarables.DeclarationBase>"><code>IList&lt;DeclarationBase&gt;</code></abbr>, so it's
+    trivial to derive a custom implementation of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>SuperScript.Common.Declarables.DeclarationBase</code></abbr>
+    and have this added to the collection.
+</p>
+
+<h3 id="emitting-declarations">Emitting Declarations</h3>
+
+<p>
+    Once we've added our declarations, whatever they may contain, the next logical step is to write them out to a desirable location. This is what
+    <em>emitters</em> are used for.
+</p>
+
+<p>
+    An emitter may be thought of as a pipeline consisting of objects which can modify the declarations, and then write the output
+    to the webpage. An emitter is passed a collection of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects, and the end of the process returns an
+    <abbr title="System.Web.IHtmlString"><code>IHtmlString</code></abbr> which contains the output of each declaration passed to this emitter.
+</p>
+
+<p>
+    Although the writing of an emitter's output is listed above as being the final step in the process, this is actually a two-stage process: when an emitter
+    receives the instruction to write its output, it must then process all declarations which pass through this emitting pipeline; once processed, the
+    <abbr title="System.Web.IHtmlString"><code>IHtmlString</code></abbr> is then compiled.
+</p>
+
+<h3 id="processing-declarations">Processing Declarations</h3>
+
+<p>
+    The emitter pipeline offers four opportunities to modify the client-side form of the emitter-specific collection of declarations:
+</p>
+
+<ul>
+    <li>
+        <h4><abbr title="SuperScript.Modifiers.Pre.CollectionPreModifier"><code>CollectionPreModifier</code></abbr></h4>
+        <p>
+            The first stage in the emitter pipeline is passed the raw, currently-unmodified collection of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects,
+            and returns a collection of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects.
+        </p>
+        <p><a href="https://github.com/Supertext/SuperScript.Common/blob/master/Modifiers/Pre/CollectionPreModifier.cs" target="_blank">View this class on GitHub</a></p>
+    </li>
+    <li>
+        <h4><abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr></h4>
+        <p>
+            The second stage in the emitter pipeline takes the output from the first stage, a collection of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects,
+            and uses the internal logic of the specific implementation of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> to
+            convert this server-side object into its client-side form.
+        </p>
+        <p>
+            The output of this stage is a string consisting of the concatenated output from all instances of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>
+            passed to this emitter.
+        </p>
+        <p><a href="https://github.com/Supertext/SuperScript.Common/blob/master/Modifiers/Converters/CollectionConverter.cs" target="_blank">View this class on GitHub</a></p>
+    </li>
+    <li>
+        <h4><abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr></h4>
+        <p>
+            The next stage in the emitter pipeline takes the output from the second stage and offers the opportunity to modify the client-side form of the declarations
+            passed to this emitter.
+        </p>
+        <p>
+            An example of the advantage which this stage offers is the possibility to minify JavaScript or to pre-compile HTML templates.
+        </p>
+        <p><a href="https://github.com/Supertext/SuperScript.Common/blob/master/Modifiers/Post/CollectionPostModifier.cs" target="_blank">View this class on GitHub</a></p>
+    </li>
+</ul>
+
+<p>
+    The final step implemented by an emitter uses an instance of an <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr> to write
+    the output to the webpage. In actuality, this still offers the opportunity to modify the output.
+</p>
+
+<ul>
+    <li>
+        <h4><abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr></h4>
+        <p>
+            The <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr> is passed a string and returns an
+            <abbr title="System.Web.IHtmlString"><code>IHtmlString</code></abbr>.
+        </p>
+        <p>
+            However, this stage offers the opportunity to write the passed string to one location and write out something entirely different to the emitting
+            location.
+        </p>
+        <p>
+            For example, this stage could write the passed string to the local file system as a <em>*.js</em> file, then write a <code>&lt;script src="&hellip;"&gt;</code>
+            tag to the webpage which references the created <em>*.js</em> file.
+        </p>
+        <p><a href="https://github.com/Supertext/SuperScript.Common/blob/master/Modifiers/Writers/HtmlWriter.cs" target="_blank">View this class on GitHub</a></p>
+    </li>
+</ul>
+
+<img src="img/core-2.gif" alt="Emitters can be thought of as a pipeline through which declarations are passed" class="center-block gutter-bottom" />
+
+<p>
+    It should now be clear that the output from processing an emitter's declarations <em>is</em> the output of the emitter, thus stage 3 in an emitter's process.
+</p>
+
+
+
+
+
+
+<h2>Further Information</h2>
+
+<p>
+    Read more about the emitter <a href="emitters/emitters.html">here</a>.
+</p>
