@@ -1,0 +1,288 @@
+<h2 id="create-emitter">Creating an Emitter</h2>
+
+<p>
+    One of the first things you'll want to do with SuperScript is create the emitter(s). There are two ways of achieving this:
+</p>
+
+<ol>
+    <li><a href="#configure-emitter">specifying an emitter in the configuration file</a></li>
+    <li><a href="#emitter-programmatically">specifying an emitter programmatically</a></li>
+</ol>
+
+
+<h3 id="configure-emitter">Specifying an emitter in the configuration file</h3>
+
+<p>
+    SuperScript allows many of its features to be declared in the configuration file. Although slightly more verbose, this method allows modifiers
+    to be added or removed to the emitter pipeline without having to deploy modified code to a server.
+</p>
+
+<pre class="brush: xml">
+    &lt;configSections&gt;
+        &lt;section name="superScript" type="SuperScript.Configuration.SuperScriptConfig, SuperScript.Common, Version=0.0.0.1, Culture=neutral" /&gt;
+    &lt;/configSections&gt;
+    &#10;
+    &hellip;
+    &#10;
+    &lt;superScript&gt;
+        &lt;emitters&gt;
+            &lt;emitter key="javascript" isDefault="true"&gt;
+                &lt;converters&gt;
+                    &lt;modifier type="SuperScript.JavaScript.Modifiers.Converters.JavaScriptStringify, SuperScript.JavaScript" /&gt;
+        &lt;/converters&gt;
+                &lt;postModifiers&gt;
+                    &lt;modifier emitMode="LiveOnly" type="SuperScript.JavaScript.Modifiers.Post.JavaScriptMinifier, SuperScript.JavaScript" /&gt;
+        &lt;/postModifiers&gt;
+                &lt;writers&gt;
+                    &lt;modifier type="SuperScript.ExternalFile.Modifiers.Writers.ExternalScriptWriter, SuperScript.ExternalFile" /&gt;
+&lt;/writers&gt;
+&lt;/emitter&gt;
+        &lt;/emitters&gt;
+    &lt;/superScript&gt;
+</pre>
+
+<p class="small">
+    The above example requires the <a href="https://github.com/Supertext/SuperScript.Common" target="_blank">SuperScript.Common</a> as well as additional libraries.
+</p>
+
+<p>
+    Here is a description of the above example:
+</p>
+
+<ol>
+    <li>
+        The configuration's <code>&lt;configSections&gt;</code> element is modified to allow a custom section (<code>&lt;superScript&gt;</code>), hitherto unrecognised by ASP.NET,
+        to be declared.
+    </li>
+    <li>
+        <p>
+            An emitter is instantiated and added to the <abbr title="SuperScript.Declarations.Emitters"><code>Emitters</code></abbr> collection.
+        </p>
+        <p>
+            This instance of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> is actually an object of type
+            <abbr title="SuperScript.Emitters.StandardEmitter"><code>StandardEmitter</code></abbr>, which is the default type (if not specified).
+        </p>
+        <p>
+            Of course, it is possible to derive custom implementations of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>
+            with more features, and then specify the type in the <code>type</code> attribute on the <code>&lt;emitter&gt;</code> element.
+        </p>
+    </li>
+    <li>
+        <p>
+            The value "<em>javascript</em>" is assigned as the <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> for this emitter.
+        </p>
+        <p>
+            Remember that the <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> is essentially an identifier for an emitter. Each emitter must
+            therefore have a unique <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr>.
+        </p>
+    </li>
+    <li>
+        <p>
+            An instance of <abbr title="SuperScript.JavaScript.Modifiers.Converters.JavaScriptStringify"><code>JavaScriptStringify</code></abbr> is then assigned to the
+            <abbr title="SuperScript.Emitters.IEmitter.CollectionConverter"><code>CollectionConverter</code></abbr> property.
+        </p>
+        <p>
+            This specific implementation of <abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr>
+            has not been covered yet, but it should suffice to say that this is simply an implementation which runs on
+            the JavaScript-oriented declarables found in the <a href="https://github.com/Supertext/SuperScript.JavaScript" target="_blank">SuperScript.JavaScript</a> library.
+        </p>
+    </li>
+    <li>
+        <p>
+            An instance of <abbr title="SuperScript.JavaScript.Modifiers.Post.JavaScriptMinifier"><code>JavaScriptMinifier</code></abbr> is
+            then assigned to the <abbr title="SuperScript.Emitters.IEmitter.PostModifiers"><code>PostModifiers</code></abbr> property.
+        </p>
+        <p>
+            This specific type of <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>
+            has not been covered yet, but it should suffice to say that this is simply an implementation which uses Microsoft's
+            <a href="https://webgrease.codeplex.com/" target="_blank">WebGrease</a> library to minify javascript.
+        </p>
+        <p>
+            Note that this <code>modifier</code> element has its <code>emitMode</code> attribute set to
+            <abbr title="SuperScript.EmitMode.LiveOnly"><code>LiveOnly</code></abbr>. This will be covered when discussing modifiers.
+        </p>
+    </li>
+    <li>
+        <p>
+            An instance of <abbr title="SuperScript.ExternalFile.Modifiers.Writers.ExternalScriptWriter"><code>ExternalScriptWriter</code></abbr>
+            is assigned to the <abbr title="SuperScript.Emitters.IEmitter.HtmlWriter"><code>HtmlWriter</code></abbr> property.
+        </p>
+        <p>
+            Again, this implementation of <code>HtmlWriter</code> is documented elsewhere, but this class writes the client-side form of
+            the emitter's declarations to an external file and places a <code>&lt;script src="&hellip;"&gt;</code> tag on the page.
+        </p>
+    </li>
+</ol>
+
+<p>
+    This emitter may now be referenced in declarations' <code>EmitterKey</code> properties. However, because this emitter was also declared as the
+    default emitter, any declarations which are added to <abbr title="SuperScript.Declarations.Collection"><code>SuperScript.Declarations.Collection</code></abbr>
+    <em>without</em> an emitter key being stated will automatically be emitted using this (default) emitter.
+</p>
+
+<h4>Implementation-specific Properties</h4>
+
+<p>
+Some implementations of <abbr title="SuperScript.Modifiers.ModifierBase"><code>ModifierBase</code></abbr> expose
+custom properties (see <a href="http://supertext.github.io/SuperScript.JavaScript/#!/page/modifiers.writers.scripttagwriter" target="_blank">here</a> for an example). The following example demonstrates how to declare values for these properties in a config file.
+</p>
+
+<pre class="brush: xml">
+&lt;modifier type="&hellip;"&gt;
+&lt;properties&gt;
+&lt;property name="PROPERTY-NAME" value="PROPERTY-VALUE" type="PROPERTY-TYPE" /&gt;
+&lt;!-- multiple &lt;property&gt; elements may be declared here --&gt;
+&lt;/properties&gt;
+&lt;/modifier&gt;
+</pre>
+
+<p>
+Unfortunately custom <abbr title="SuperScript.Modifiers.ModifierBase"><code>ModifierBase</code></abbr> properties 
+which have a collection type (<em>i.e.</em>, an <code>IEnumerable</code>) cannot be declared in a config file. Such
+custom properties must be declared programmatically.
+</p>
+
+
+<h3 id="emitter-programmatically">Specifying an emitter programmatically</h3>
+
+<p>
+    An alternative to using the configuration file is to call some code which instantiates an emitter and adds it to the
+    <abbr title="SuperScript.Declarations.Emitters"><code>Emitters</code></abbr> collection.
+</p>
+
+<pre class="brush: c#">
+    Emitters.Add(new StandardEmitter
+                 {
+                   Key = "whenReady",
+                   Converter = new JavaScriptStringify(),
+                   PostModifiers = new Collection&lt;CollectionPostModifier&gt;
+                                     {
+                                       new WhenReady(),
+                                       new JavaScriptMinifier
+                                         {
+                                           EmitMode = EmitMode.LiveOnly
+                                         }
+                                     },
+                   HtmlWriter = new ScriptTagWriter()
+                 });
+</pre>
+
+<p class="small">
+    The above example requires the <a href="https://github.com/Supertext/SuperScript.Common" target="_blank">SuperScript.Common</a> as well as additional libraries.
+</p>
+
+<p>
+    Here is a description of the above example:
+</p>
+
+<ol>
+    <li>
+        <p>
+            This example makes it clear that we are instantiating an instance of <abbr title="SuperScript.Emitters.StandardEmitter"><code>StandardEmitter</code></abbr>.
+        </p>
+    </li>
+    <li>
+        <p>
+            The <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> "<em>whenReady</em>" is assigned to this emitter.
+        </p>
+        <p>
+            Remember that the <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> is essentially an identifier for an emitter. Each emitter must
+            therefore have a unique <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr>.
+        </p>
+    </li>
+    <li>
+        <p>
+            An instance of <abbr title="SuperScript.JavaScript.Modifiers.Converters.JavaScriptStringify "><code>JavaScriptStringify</code></abbr> is assigned
+            as this emitter's <abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr>.
+        </p>
+    </li>
+    <li>
+        <p>
+            The <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier "><code>PostModifiers</code></abbr> property is instantiated as a new
+            <abbr title="System.Collections.ObjectModel.Collection<T>"><code>Collection</code></abbr>.
+        </p>
+        <p>
+            Into this collection is added
+        </p>
+        <ol>
+            <li>
+                <p>
+                    <abbr title="SuperScript.JavaScript.Modifiers.Post.WhenReady"><code>WhenReady</code></abbr>, an implementation of
+                    <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier "><code>CollectionPostModifier</code></abbr> which writes it's JavaScript
+                    content into a jQuery <a href="http://api.jquery.com/ready/" target="_blank">.ready</a> closure.
+                </p>
+            </li>
+            <li>
+                <p>
+                    An instance of <abbr title="SuperScript.JavaScript.Modifiers.Post.JavaScriptMinifier"><code>JavaScriptMinifier</code></abbr> is
+                    then assigned to the <abbr title="SuperScript.Emitters.IEmitter.PostModifiers"><code>PostModifiers</code></abbr> property.
+                </p>
+                <p>
+                    This specific type of <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>
+                    has not been covered yet, but it should suffice to say that this is simply an implementation which uses Microsoft's
+                    <a href="https://webgrease.codeplex.com/" target="_blank">WebGrease</a> library to minify javascript.
+                </p>
+                <p>
+                    Furthermore, this <abbr title="SuperScript.JavaScript.Modifiers.Post.JavaScriptMinifier"><code>JavaScriptMinifier</code></abbr> instance
+                    will only be implemented when the application is not running in debug mode.
+                </p>
+            </li>
+        </ol>
+    </li>
+    <li>
+        <p>
+            An instance of <abbr title="SuperScript.JavaScript.Modifiers.Writers.ScriptTagWriter"><code>ScriptTagWriter</code></abbr>
+            is assigned to the <abbr title="SuperScript.Emitters.IEmitter.HtmlWriter"><code>HtmlWriter</code></abbr> property.
+        </p>
+        <p>
+            This implementation of <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr> writes the client-side
+            form of the emitter's declarations into a <code>&lt;script&gt;</code> tag on the page.
+        </p>
+    </li>
+</ol>
+
+<p>
+    So in summary, <em>declarations</em> which are instructed to pass through this <em>emitter</em> will be placed inside a jQuery <em>.ready</em> closure,
+    itself written into a <code>&lt;script&gt;</code> tag. And when the application is not running in debug mode, the contents of the
+    <code>&lt;script&gt;</code> tag will be minified.
+</p>
+
+<p>
+    <strong>Important point:</strong> When specifying emitters programatically, this code should be placed in a method which is called once per application. For example,
+    the <em>global.asax</em>'s <code>Application_Start</code> method presents a good opportunity.
+</p>
+
+
+<h3 id="multiple-emitters">Multiple Emitters</h3>
+
+<p>
+    An application may have multiple emitters, each with a different set of <em>modifiers</em>, and each with a different
+    <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr>. For example, an application may have one emitter for JavaScript to be run
+    immediately upon load, and another emitter with JavaScript to be run only once the DOM has loaded.
+</p>
+
+<p>
+    These may be emitted one at a time, specifying their individual <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> values, or
+    SuperScript can be instructed to write the output of <em>all</em> emitters at the same location in the HTML document.
+</p>
+
+<p>
+    Another more advanced option is to <em>bundle</em> emitters into a named <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr>
+    and instruct SuperScript to emit for those included emitters. Read about emitter bundles <a href="emitter-bundles.html">here</a>.
+</p>
+
+<p>
+    The next page will explain how to retrieve the client-side formatted output of an emitter.
+</p>
+
+
+
+<h2>What Next?</h2>
+
+<p>
+    Read about declarations <a href="../declarations/declarations.html">here</a>.
+</p>
+
+<p>
+    Read about emitting the declarations from an emitter <a href="emitting.html">here</a>.
+</p>
