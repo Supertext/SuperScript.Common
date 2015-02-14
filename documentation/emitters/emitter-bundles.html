@@ -1,0 +1,218 @@
+<h2 id="create-emitter">Emitter Bundles</h2>
+
+<p>
+    The case may arise where more than one emitter is being emitted in the same fashion. For example, <a href="https://github.com/Supertext/SuperScript.ExternalFile" target="_blank">SuperScript.ExternalFile</a>
+    offers writing an emitter's output to an external file (and referencing this file on the webpage): bundling emitters allows multiple
+    emitters to have their declarations processed as normal, and then compiled together via a shared final emitter.
+</p>
+
+<p>
+    It is important to remember that because an <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr> is made up of
+    standard <abbr title="SuperScript.Emitters.IEmitter"><code>emitters</code></abbr>, the emitted declarations will still be processed by their
+    individual emitters in the normal way; the concatenated output of each <abbr title="SuperScript.Emitters.IEmitter"><code>emitter</code></abbr> in
+    the bundle is then processed by the <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr>.
+</p>
+
+
+
+<h3>EmitterBundle Members</h3>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>CustomObject</td>
+        <td>object</td>
+        <td>
+            <p>
+                This property allows the user to pass any required object through the modification and conversion process.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>EmitterKeys</td>
+        <td>IEnumerable&lt;string&gt;</td>
+        <td>
+            <p>
+                Gets or sets the <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> for each <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>
+                in the bundle.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>Emitters</td>
+        <td>IEnumerable&lt;<abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>&gt;</td>
+        <td>
+            <p>
+                Gets a collection of instances of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> which should have their
+                emitted outputs bundled together.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>Key</td>
+        <td>string</td>
+        <td>The identifier for this instance of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>.</td>
+    </tr>
+    <tr>
+        <td>PostModifiers</td>
+        <td>ICollection&lt;<abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>&gt;</td>
+        <td>
+            <p>
+                The implementations of <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>
+                which have been assigned to this <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>HtmlWriter</td>
+        <td><abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr></td>
+        <td>
+            <p>
+                The implementation of <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr> which has been assigned to
+                this <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> for writing the formatted output to the webpage.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>ToHtmlString</td>
+        <td>IHtmlString</td>
+        <td>
+            <p>
+                When called, this method emits the client-side form of the specified declarations via their specified instances of
+                <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<p>
+    As can be seen, an <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr> doesn't expose the same members that
+    an <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> offers; an <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>
+    should still be configured to process declarations in a specific declaration-oriented manner. An
+    <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr> allows one or more
+    <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr> objects - for example, for
+    minification purposes (it makes sense to minify the bundled output of multiple emitters in a single pass).
+</p>
+
+<p>
+    Also, instances of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> are added to a bundle by specifying
+    the <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> of that <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>,
+    <strong>not</strong> by adding the <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> itself to the
+    <abbr title="SuperScript.Emitters.EmitterBundle.Emitters"><code>Emitters</code></abbr> property.
+</p>
+
+
+
+<h3 id="configure-emitter">Configuring an Emitter Bundle</h3>
+
+<p>
+    Configuring an <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr> requires that the
+    referenced instances of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> have already been created.
+</p>
+
+<p>
+    Just as with an <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>, an
+    <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr> can be created in the configuration file or in code.
+</p>
+
+<pre class="brush: xml">
+    &lt;configSections&gt;
+        &lt;section name="superScript" type="SuperScript.Configuration.SuperScriptConfig, SuperScript.Common, Version=0.0.0.1, Culture=neutral" /&gt;
+    &lt;/configSections&gt;
+    &#10;
+    &hellip;
+    &#10;
+    &lt;superScript&gt;
+        &lt;emitterBundles&gt;
+          &lt;emitterBundle key="bundled" bundleKeys="javascript, whenReady, templates"&gt;
+            &lt;postModifiers&gt;
+              &lt;modifier emitMode="LiveOnly" type="SuperScript.JavaScript.Modifiers.Post.JavaScriptMinifier, SuperScript.JavaScript" /&gt;
+            &lt;/postModifiers&gt;
+            &lt;writers&gt;
+              &lt;modifier type="SuperScript.ExternalFile.Modifiers.Writers.ExternalScriptWriter, SuperScript.ExternalFile"&gt;
+                &lt;properties&gt;
+                  &lt;property name="Longevity" value="Reuse" type="SuperScript.Longevity, SuperScript.ExternalFile" /&gt;
+                &lt;/properties&gt;
+              &lt;/modifier&gt;
+            &lt;/writers&gt;
+          &lt;/emitterBundle&gt;
+        &lt;/emitterBundles&gt;
+    &lt;/superScript&gt;
+</pre>
+
+<p class="small">
+    The above example requires the <a href="https://github.com/Supertext/SuperScript.Common" target="_blank">SuperScript.Common</a> as well as additional libraries.
+</p>
+
+<p>
+    This example creates an <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr> with the
+    <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> "<em>bundled</em>", and which incorporates instances of
+    <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> whose <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr>s
+    are "<em>javascript</em>", "<em>whenReady</em>" and "<em>templates</em>".
+</p>
+
+<p>
+    This <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr> implements
+    <abbr title="SuperScript.JavaScript.Modifiers.Post.JavaScriptMinifier"><code>JavaScriptMinifier</code></abbr> as a
+    <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>PostModifier</code></abbr>, and then
+    <abbr title="SuperScript.ExternalFile.Modifiers.Writers.ExternalScriptWriter"><code>ExternalScriptWriter</code></abbr> as the
+    <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr>.
+</p>
+
+<p>
+    The same <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr>
+    may also be declared in code.
+</p>
+
+<pre class="brush: c#">
+    EmitterBundles.Add(new EmitterBundle
+                 {
+                   Key = "bundled",
+                   EmitterKeys = new List&lt;string&gt;
+                             {
+		                         "javascript",
+	                             "whenReady",
+	                             "templates"
+                             },
+                   PostModifiers = new Collection&lt;CollectionPostModifier&gt;
+	                           {
+			                        new JavaScriptMinifier
+				                        {
+					                        EmitMode = EmitMode.LiveOnly
+				                        }
+	                           },
+                   HtmlWriter = new ExternalScriptWriter
+	                        {
+		                        Longevity = Longevity.Reuse
+                            }
+                 });
+</pre>
+
+
+
+<h3 id="how-to-emit">How to Emit an EmitterBundle</h3>
+
+<p>
+    An <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr> is emitted in exactly the same way as 
+    an <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>.
+</p>
+
+<p>
+    Read the documentation for emitting an <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>
+    <a href="emitting.html">here</a>.
+</p>
+
+
+
+<h2>What Next?</h2>
+
+<p>
+    Read about declarations <a href="../declarations/declarations.html">here</a>.
+</p>
