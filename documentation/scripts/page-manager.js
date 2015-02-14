@@ -22,11 +22,10 @@ var PageManager = function (win, doc) {
 				})
 				.to(function() {
 					var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
-						anchor = this.params.anchor,
+						anchor = this.params.anchor.value,
 						loadUrl = urlDirectory + specificPath,
 						elmntLink = $("a[href='#!/page/" + this.params.contentName.value + "']");
 						
-						console.log(anchor);
 					$.ajax({
 						dataType: "html",
 						type: "GET",
@@ -35,6 +34,13 @@ var PageManager = function (win, doc) {
 							$("#content").html(data);
 							
 							SyntaxHighlighter.highlight();
+							
+							if (typeof(anchor) !== "undefined") {
+								var elmntAnchor = doc.getElementById(anchor);
+								if (elmntAnchor !== null) {
+									elmntAnchor.scrollIntoView(true);
+								}
+							}
 						},
 						error: function (xmlHttpRequest, textStatus, errorThrown) {
 							$("#content").html("<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>");
