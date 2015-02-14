@@ -1,1 +1,5 @@
 *.db
+obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+obj/Debug/SuperScript.Common.csprojResolveAssemblyReference.cache
+SuperScript.Common.csproj.DotSettings
+SuperScript.Common.csproj.vspscc
