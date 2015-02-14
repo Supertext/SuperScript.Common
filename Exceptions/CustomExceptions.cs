@@ -80,11 +80,20 @@ namespace SuperScript
 
 
 	/// <summary>
-	/// <para>An <see cref="Exception"/> indicating the the <see cref="Collection{DeclarationBase}"/> has not been instantiated.</para>
+	/// <para>An <see cref="Exception"/> indicating that the <see cref="Collection{DeclarationBase}"/> has not been instantiated.</para>
 	/// <para>By default, this should be instantiated in the <see cref="HttpInitialiser"/> handler, though it can be set anywhere.</para>
 	/// </summary>
 	public class CollectionNotInstantiatedException : SuperScriptException
 	{
+		/// <summary>
+        /// Constructor for <see cref="CollectionNotInstantiatedException"/> which allows an exception-specific message to be relayed to the developer.
+		/// </summary>
+        public CollectionNotInstantiatedException(string message)
+			: base(message)
+		{
+		}
+
+
 		/// <summary>
 		/// Parameterless constructor for the <see cref="CollectionNotInstantiatedException"/> <see cref="Exception"/>.
 		/// </summary>

@@ -23,11 +23,22 @@ namespace SuperScript.Configuration
         /// <para>Gets the instance of <see cref="IEmitter"/> which has IsDefault=true.</para>
         /// <para>If no instance of <see cref="IEmitter"/> has this status explicitly indicated then the first instance of <see cref="IEmitter"/> in the configuration shall be returned.</para>
         /// </summary>
-        /// <exception cref="SuperScriptException">Thrown if no instances of <see cref="IEmitter"/> have been configured.</exception>
+        /// <exception cref="CollectionNotInstantiatedException">Thrown if the <see cref="Emitters"/> collection property has not been instantiated. This should be done for each HTTP request.</exception>
+        /// <exception cref="NoEmittersConfiguredException">Thrown if no instances of <see cref="IEmitter"/> have been configured.</exception>
         public IEmitter DefaultEmitter
         {
             get
             {
+                if (Emitters == null)
+                {
+                    throw new CollectionNotInstantiatedException("The SuperScript.Configuration.Settings.Emitters collection property has not been instantiated. This should be done for each HTTP request.");
+                }
+
+                if (!Emitters.Any())
+                {
+                    throw new NoEmittersConfiguredException();
+                }
+
                 // find which is the default Emitter
                 return Emitters.FirstOrDefault(e => e.IsDefault) ?? Emitters.FirstOrDefault();
             }
