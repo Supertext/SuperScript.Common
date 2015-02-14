@@ -1,0 +1,301 @@
+<h2>Declarations</h2>
+
+<p>
+    Along with <a href="../emitters/emitters.html">emitters</a>, declarations are a core concept of SuperScript.
+</p>
+
+<h3>What is a Declaration?</h3>
+
+<p>
+    As described in <a href="../core-concepts.html#adding-declarations">Core Concepts</a>, a declaration is an object which represents
+    a server-side form of an entity to be used client-side.
+</p>
+
+<p>
+    A simple example might be a JavaScript variable representing a username: the name and value of the variable can be easily set server-side,
+    as well as whether to prepend <code>var</code>.
+</p>
+
+<p>
+    Another example might be an HTML template which is modified server-side, then appended to the HTML to be used client-side.
+</p>
+
+<p>
+    Declarations are added to an application-wide <abbr title="IList&lt;SuperScript.Declarables.DeclarationBase&gt; SuperScript.Declarations.Collection"><code>Collection</code></abbr>.
+    Consequently, declarations may be added, retrieved, modified or deleted from anywhere in the application.
+</p>
+
+<img src="../img/core-1.gif" alt="Emitters can be thought of as a pipeline through which declarations are passed" class="center-block gutter-bottom" />
+
+<p class="small text-center">
+    The figure above shows that wherever declarations are made, they are all added to the same collection, <code>SuperScript.Declarations.Collection</code>.
+</p>
+
+<h3 id="declaration-types">Declaration Types</h3>
+
+<p>
+    All <em>declarations</em> must be an instance of the abstract class, <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>.
+    This class belongs to the <a href="https://github.com/Supertext/SuperScript.Common" target="_blank">SuperScript.Common</a> library
+</p>
+
+<p>
+    <a href="https://github.com/Supertext/SuperScript.Common" target="_blank">SuperScript.Common</a> contains no usable implementations of
+    <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>. Rather, implementation-specific type can be found
+    in the various <a href="../current-projects.html">SuperScript add-on libraries</a>.
+</p>
+
+
+
+<h3>DeclarationBase Members</h3>
+
+<p>
+    A <em>declaration</em> is an instance of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>.
+</p>
+
+<pre class="brush: c#">
+    abstract class DeclarationBase
+    {
+        string EmitterKey { get; set; }
+        string Name { get; set; }
+        abstract string ToString();
+    }
+</pre>
+
+<p>
+    Let's take a look at each of the members on the <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>
+    abstract class.
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>EmitterKey</td>
+        <td>string</td>
+        <td>
+            <p>
+                Indicates which instance of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> the content should be added to.
+            </p>
+            <p>
+                If not specified then the contents will be added to the default implementation of <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td>string</td>
+        <td>
+            <p>
+                Gets or sets the name assigned to this declarable.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>ToString</td>
+        <td>string</td>
+        <td>
+            <p>
+                A call to this method will return this instance as a formatted string.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<p>
+    Some of the libraries listed on the <a href="../current-projects.html">Current Projects</a> page will contain implementations of 
+    <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> with additional, implementation-specific 
+    properties.
+</p>
+
+
+
+<h3 id="adding-declarations">Adding a Declaration</h3>
+
+<p>
+    <abbr title="SuperScript.Declarations"><code>SuperScript.Declarations</code></abbr> offers two methods for adding implementations of
+    <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> to 
+    <abbr title="SuperScript.Declarations.Collection"><code>Collection</code></abbr>.
+</p>
+
+<pre class="brush: c#">
+    public static T AddDeclaration&lt;T&gt;(DeclarationBase declaration, int? insertAt = null) where T : DeclarationBase
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>declaration</td>
+        <td><abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr></td>
+        <td>
+            <p>
+                A custom implementation of the <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> abstract class.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>insertAt</td>
+        <td>Nullable&lt;int&gt;</td>
+        <td>
+            <p>
+                Permits the instance of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> to be
+                inserted into the collection at a specified index.
+            </p>
+            <p>
+                The default value is <code>null</code>, so if not specified the instance will be appended to the collection.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<pre class="brush: c#">
+    public static IEnumerable&lt;T&gt; AddDeclarations&lt;T&gt;(IEnumerable&lt;T&gt; declarations) where T : DeclarationBase
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>declarations</td>
+        <td><abbr title="IEnumerable&lt;SuperScript.Declarables.DeclarationBase&gt;"><code>DeclarationBase</code></abbr></td>
+        <td>
+            <p>
+                A collection of custom implementations of the <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> abstract class.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+<h3 id="removing-declarations">Removing a Declaration</h3>
+
+<p>
+    <abbr title="SuperScript.Declarations"><code>SuperScript.Declarations</code></abbr> offers three methods for removing implementations of
+    <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> from
+    <abbr title="SuperScript.Declarations.Collection"><code>Collection</code></abbr>.
+</p>
+
+
+<pre class="brush: c#">
+    public static void Remove(string nameOrCall)
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>nameOrCall</td>
+        <td>string</td>
+        <td>
+            <p>
+                The <abbr title="SuperScript.Declarables.DeclarationBase.Name"><code>Name</code></abbr> of the previously-declared
+                instance of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>.
+            </p>
+            <p>
+                If specifying a function call (see <a href="https://github.com/Supertext/SuperScript.JavaScript" target="_blank"></a>)
+                then there is no need to include parentheses and parameters.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<pre class="brush: c#">
+    public static void Remove(DeclarationBase declaration)
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>declaration</td>
+        <td><abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr></td>
+        <td>
+            <p>
+                The instance of <abbr title="SuperScript.Declarables.DeclarationBase.Name"><code>DeclarationBase</code></abbr>.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+<p>
+    In addition to the two methods which remove a specific instance of <abbr title="SuperScript.Declarables.DeclarationBase.Name"><code>DeclarationBase</code></abbr>,
+    it is also possible to <em>reset</em> the <abbr title="SuperScript.Declarations.Collection"><code>Collection</code></abbr>.
+</p>
+
+<p>
+    When <em>resetting</em> the <abbr title="SuperScript.Declarations.Collection"><code>Collection</code></abbr>, it is possible to
+    remove only the instances of <abbr title="SuperScript.Declarables.DeclarationBase.Name"><code>DeclarationBase</code></abbr> which
+    were added in the code, leaving any configured instances of <abbr title="SuperScript.Declarables.DeclarationBase.Name"><code>DeclarationBase</code></abbr>
+    intact.
+</p>
+
+
+<pre class="brush: c#">
+    public static void Reset(bool removeDefaults = false)
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>removeDefaults</td>
+        <td>bool</td>
+        <td>
+            <p>
+                Determines whether the configured default instances of <abbr title="SuperScript.Declarables.DeclarationBase.Name"><code>DeclarationBase</code></abbr>
+                (if any exist) are to remain or whether <i>all</i> instances should be removed.
+            </p>
+            <p>
+                The default value is <code>false</code>, which means that configured instances will be left in the 
+                <abbr title="SuperScript.Declarations.Collection"><code>Collection</code></abbr>.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<h2>What Next?</h2>
+
+<p>
+    Read about emitters <a href="../emitters/emitters.html">here</a>.
+</p>
