@@ -23,11 +23,16 @@ footer p {
 }
 
 footer img {
-	height: 25px;	
+	height: 25px;
+	vertical-align: -7px;
 }
 
 footer img[alt='Brand'] {
     margin: 7px 0 10px;
+}
+
+footer ul {
+	margin-top: 15px;
 }
 
 h3 {
