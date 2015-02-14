@@ -1,0 +1,140 @@
+<h2>The Post-Collection Modifier</h2>
+
+<p>
+    <em>It is recommended to read about modifiers prior to reading the detail on this page. Read about modifiers <a href="modifiers.html">here</a>.</em>
+</p>
+
+<p>
+    Modifies the <code>string</code> output of a <abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr>
+    implementation.
+</p>
+
+<img src="../img/core-2.gif" alt="Emitters can be thought of as a pipeline through which declarations are passed" class="center-block gutter-bottom" />
+
+<p class="small text-center">
+    The above image demonstrates how a <abbr tite="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>
+    will be processed after the collections of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>
+    have been converted into a <code>string</code>, and prior to the client-side form being written to the webpage via an 
+    <abbr title="SuperScript.Modifiers.Writers.HtmlWriter"><code>HtmlWriter</code></abbr>.
+</p>
+
+<p>
+    Multiple implementations of <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr> may
+    be added to an <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr>. Because the
+    <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr> takes and returns the same object,
+    they may be <em>stacked</em> in a pre-determined order, with the output from one being the input to the next.
+</p>
+
+<h3 id="collection-post-modifier-members">CollectionPostModifier Members</h3>
+
+<pre class="brush: c#">
+    abstract class SuperScript.Modifiers.Post.CollectionPostModifier 
+    {
+        abstract PostModifierArgs Process(PostModifierArgs args);
+        bool UseWhenBundled { get; set; }
+    }
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>Process</td>
+        <td><abbr title="SuperScript.Modifiers.PostModifierArgs"><code>PostModifierArgs</code></abbr></td>
+        <td>
+            <p>
+                Executes this instance of <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>
+                upon the specified <abbr title="SuperScript.Modifiers.PostModifierArgs"><code>PostModifierArgs</code></abbr>.
+            </p>
+            <p>
+                Returns an instance of <abbr title="SuperScript.Modifiers.PostModifierArgs"><code>PostModifierArgs</code></abbr> which is
+                expected to be a modified version of the input argument.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>UseWhenBundled</td>
+        <td>bool</td>
+        <td>
+            <p>
+                Gets or sets whether this <abbr title="SuperScript.Modifiers.Post.CollectionPostModifier"><code>CollectionPostModifier</code></abbr>
+                should be implemented when its parent <abbr title="SuperScript.Emitters.IEmitter"><code>IEmitter</code></abbr> is referenced by a
+                <abbr title="SuperScript.Emitters.EmitterBundle"><code>EmitterBundle</code></abbr>.
+            </p>
+            <p>
+                Read more about emitter bundles <a href="">here</a>.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<h3 id="post-modifier-args-members">PostModifierArgs Members</h3>
+
+<pre class="brush: c#">
+    class SuperScript.Modifiers.PostModifierArgs
+    {                        
+        object CustomObject { get; set; }
+        string Emitted { get; set; }
+        bool IsDebug { get; }
+    }
+</pre>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>CustomObject</td>
+        <td>object</td>
+        <td>
+            <p>
+                This property allows the user to pass any required object through the conversion process.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>Emitted</td>
+        <td>string</td>
+        <td>
+            <p>
+                Expected to be the output of a <abbr title="SuperScript.Modifiers.Converters.CollectionConverter"><code>CollectionConverter</code></abbr>
+                or a previous instance of <abbr title="SuperScript.Modifiers.PostModifierArgs"><code>PostModifierArgs</code></abbr>.
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>IsDebug</td>
+        <td>bool</td>
+        <td>
+            <p>
+                Gets a value indicating whether the current HTTP request is in debug mode.
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<h2>What Next?</h2>
+
+<p>
+    Read about pre-conversion modifiers <a href="collection-pre-modifier.html">here</a>.
+</p>
+
+<p>
+    Read about collection converters <a href="collection-converter.html">here</a>.
+</p>
+
+<p>
+    Read about HTML writers <a href="html-writer.html">here</a>.
+</p>
