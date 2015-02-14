@@ -27,26 +27,35 @@ var PageManager = function (win, doc) {
 						elmntContent = doc.getElementById("content"),
 						elmntLink = $("a[href='#!/" + this.params.contentName.value + "']");
 						
-					$.ajax({
-						dataType: "html",
-						type: "GET",
-						url: loadUrl,
-						success: function (data) {
-							$(elmntContent).html(data);
-							
-							SyntaxHighlighter.highlight();
-							
-							if (typeof(anchor) !== "undefined") {
-								var elmntAnchor = doc.getElementById(anchor);
-								if (elmntAnchor !== null) {
-									elmntAnchor.scrollIntoView(true);
+					if (this.params.contentName.hasChanged) {
+						$.ajax({
+							dataType: "html",
+							type: "GET",
+							url: loadUrl,
+							success: function (data) {
+								$(elmntContent).html(data);
+								
+								SyntaxHighlighter.highlight();
+								
+								if (typeof(anchor) !== "undefined") {
+									var elmntAnchor = doc.getElementById(anchor);
+									if (elmntAnchor !== null) {
+										elmntAnchor.scrollIntoView(true);
+									}
 								}
+							},
+							error: function (xmlHttpRequest, textStatus, errorThrown) {
+								$("#content").html("<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>");
 							}
-						},
-						error: function (xmlHttpRequest, textStatus, errorThrown) {
-							$("#content").html("<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>");
+						});
+					} else {
+						if (typeof(anchor) !== "undefined") {
+							var elmntAnchor = doc.getElementById(anchor);
+							if (elmntAnchor !== null) {
+								elmntAnchor.scrollIntoView(true);
+							}
 						}
-					});
+					}
 					
 					elmntContent.className = elmntContent.className + " " + this.params.contentName.value;
 					
