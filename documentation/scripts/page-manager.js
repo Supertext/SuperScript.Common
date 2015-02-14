@@ -58,7 +58,7 @@ var PageManager = function (win, doc) {
 
 $(function() {
 	PageManager.Init();
-	Routing.root("#!/page/index");
+	Routing.root("#!/index");
 	Routing.listen();
 	
 	SyntaxHighlighter.defaults["gutter"] = false;
