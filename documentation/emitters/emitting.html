@@ -1,0 +1,91 @@
+<h2>Emitting Declarations</h2>
+
+<p>
+    We now know that an application using SuperScript has an application-wide collection of declarations, and that these are then passed to
+    emitters which process and modify the declarations before writing a desired output to the webpage.
+</p>
+
+<p>
+    One thing which has yet to be explained is how and which emitter the declarations are passed through.
+</p>
+
+<h3 id="how-to-emit">How to Emit</h3>
+
+<p>
+    In the desired, optimal location for writing the output of an emitter, there are three possible methods for writing the output.
+</p>
+
+<ul>
+    <li>
+        <h4>Output a specific declaration</h4>
+        <p>
+            By specifying the <em>Name</em> property of a declaration. [<strong>Important: </strong> not all implementations of
+            <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> have a <em>Name</em> property.]
+        </p>
+        <pre class="brush: c#; html-script: true">
+            [WebForms]
+            <%: SuperScript.Declarations.Emit("myVar") %>
+        </pre>
+        <pre class="brush: razor">
+            [Razor view]
+            @SuperScript.Declarations.Emit("myVar")
+        </pre>
+        <p class="small">
+            The above examples assume that a declaration with the <em>Name</em> "myVar" has been added to <code>Superscript.Declarations</code>.
+        </p>
+        <p>
+            Calling <code>Emit</code> instructs SuperScript to pull the specified instance of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>,
+            determine which emitter should process it, and the passes the instance to that emitter.
+        </p>
+    </li>
+    <li>
+        <h4>Output all declarations for a specific emitter</h4>
+        <p>
+            By specifying the <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> of an emitter.
+        </p>
+        <pre class="brush: c#; html-script: true">
+            [WebForms]
+            <%: SuperScript.Declarations.EmitFor("javascript") %>
+        </pre>
+        <pre class="brush: razor">
+            [Razor view]
+            @SuperScript.Declarations.EmitFor("javascript")
+        </pre>
+        <p class="small">
+            The above examples assume that an emitter has been declared with the <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> "javascript".
+        </p>
+        <p>
+            Calling <code>EmitFor</code> instructs SuperScript to retrieve all instances of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>
+            which reference the specified emitter <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr>, then pass this collection of
+            <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects to that emitter.
+        </p>
+    </li>
+    <li>
+        <h4>Output for all emitters</h4>
+        <p>
+            By calling <code>EmitForAll</code> the output of all configured emitters can be written in the same location.
+        </p>
+        <pre class="brush: c#; html-script: true">
+            <%: SuperScript.Declarations.EmitForAll() %>
+        </pre>
+        <pre class="brush: razor">
+            @SuperScript.Declarations.EmitForAll()
+        </pre>
+        <p>
+            Calling <code>EmitForAll</code> instructs SuperScript to group all instances of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>
+            by their <abbr title="SuperScript.Emitters.IEmitter.Key"><code>Key</code></abbr> properties, then pass each group to that group's emitter.
+        </p>
+    </li>
+</ul>
+
+
+
+<h2>What Next?</h2>
+
+<p>
+    Read about emitter bundles <a href="emitter-bundles.html">here</a>.
+</p>
+
+<p>
+    Read about declarations <a href="../declarations/declarations.html">here</a>.
+</p>
