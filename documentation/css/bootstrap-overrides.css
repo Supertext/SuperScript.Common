@@ -110,6 +110,15 @@ ul.dropdown-menu > li.sub-heading {
 	font-weight: bold;
 }
 
+/* content-specific styling */
+
+.current-projects dd {
+	margin-bottom: 25px;
+}
+
+/* end of content-specific styling */
+
+
 #content .syntaxhighlighter {
     background-color: #f5f5f5 !important;
     border: 1px solid #ccc;
