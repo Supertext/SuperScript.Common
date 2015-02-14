@@ -96,6 +96,11 @@ table > tbody > tr > td[colspan="3"] {
     border-width: 0;
 }
 
+.navbar-right a img {
+	height: 25px;
+	vertical-align: -7px;
+}
+
 .navbar-nav > .active > a {
     background-color: #eee;
 }
