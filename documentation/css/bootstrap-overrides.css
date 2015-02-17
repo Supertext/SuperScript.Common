@@ -114,8 +114,8 @@ table > tbody > tr > td[colspan="3"] {
 }
 
 .navbar-right a img {
-	height: 25px;
-	vertical-align: -7px;
+	height: 20px;
+	vertical-align: -5px;
 }
 
 .navbar-nav > .active > a {
