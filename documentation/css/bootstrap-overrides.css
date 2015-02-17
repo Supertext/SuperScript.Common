@@ -1,5 +1,10 @@
-html, body {
-	height: 100%;
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 100px;
 }
 
 a:not([href]) {
@@ -15,11 +20,9 @@ footer {
     background-color: transparent;
     border-top: 1px solid #f5f5f5;
     bottom: 0;
-    clear: both;
     height: 100px;
-    margin-top: -100px;
     padding-top: 25px;
-    position: relative;
+    position: absolute;
     text-align: center;
     width: 100%;
 }
