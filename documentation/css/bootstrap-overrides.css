@@ -4,7 +4,7 @@ html {
 }
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 100px;
+  margin-bottom: 150px;
 }
 
 a:not([href]) {
@@ -20,7 +20,7 @@ footer {
     background-color: transparent;
     border-top: 1px solid #f5f5f5;
     bottom: 0;
-    height: 100px;
+    height: 150px;
     padding-top: 25px;
     position: absolute;
     text-align: center;
