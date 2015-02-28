@@ -78,6 +78,7 @@ table > tbody > tr > td[colspan="3"] {
 }
 
 ul.class-hierarchy {
+	margin: 2em 0;
 	text-align: center;
 }
 
