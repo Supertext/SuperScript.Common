@@ -78,7 +78,7 @@ table > tbody > tr > td[colspan="3"] {
 }
 
 ul.class-hierarchy {
-	padding-left: 3em;
+	text-align: center;
 }
 
 ul.class-hierarchy > li:nth-child(even) {
