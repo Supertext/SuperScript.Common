@@ -81,10 +81,6 @@ ul.class-hierarchy {
 	text-align: center;
 }
 
-ul.class-hierarchy > li:nth-child(even) {
-	padding-left: 3em;
-}
-
 #main {
 	overflow: auto;
 	padding-bottom: 100px;
