@@ -9,11 +9,13 @@ body {
 a:link > abbr > code {
 	border-bottom: 1px solid #337AB7;
 }
+a:hover {
+	text-decoration: none;
+}
 a:hover > abbr > code {
 	border-bottom-color: #C7254E;
 	color: #337AB7 !important;
 	cursor: pointer;
-	text-decoration: none;
 }
 
 a:not([href]) {
