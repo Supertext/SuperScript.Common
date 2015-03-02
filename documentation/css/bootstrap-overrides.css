@@ -14,6 +14,8 @@ a:hover {
 }
 a:hover > abbr > code {
 	border-bottom-color: #C7254E;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
 	color: #337AB7 !important;
 	cursor: pointer;
 }
