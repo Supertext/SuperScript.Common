@@ -12,7 +12,7 @@
 </p>
 
 <ol>
-    <li><a href="#!/core-concepts/adding-declarations">adding declarations</a></li>
+    <li><a href="#!/core-concepts/adding-declarations">adding declarations to an emitter</a></li>
     <li><a href="#!/core-concepts/processing-declarations">processing an emitter's declarations</a></li>
     <li><a href="#!/core-concepts/emitting-declarations">writing the output of the emitter</a></li>
 </ol>
@@ -37,14 +37,14 @@
 </p>
 
 <p>
-    A <i>declarable</i> is simply an instance of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>SuperScript.Common.Declarables.DeclarationBase</code></abbr>.
-    The content of the declaration can be many things, depending upon the implementation of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>.
-    For example, <a href="https://github.com/Supertext/SuperScript.Templates" target="_blank">SuperScript.Templates</a> allows a client-side HTML template to be declared.
+    A <i>declarable</i> is simply an instance of <abbr title="SuperScript.Declarables.DeclarationBase"><code>SuperScript.Declarables.DeclarationBase</code></abbr>.
+    The content of the declaration can be many things, depending upon the implementation of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr>.
+    For example, <a href="http://supertext.github.io/SuperScript.Templates/#!/declarations.template-declaration" target="_blank">SuperScript.Templates</a> allows a client-side HTML template to be declared.
 </p>
 
 <p>
     The central collection of declarations is an <abbr title="IList<SuperScript.Declarables.DeclarationBase>"><code>IList&lt;DeclarationBase&gt;</code></abbr>, so it's
-    trivial to derive a custom implementation of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>SuperScript.Common.Declarables.DeclarationBase</code></abbr>
+    trivial to derive a custom implementation of <abbr title="SuperScript.Declarables.DeclarationBase"><code>SuperScript.Declarables.DeclarationBase</code></abbr>
     and have this added to the collection.
 </p>
 
@@ -56,14 +56,14 @@
 </p>
 
 <p>
-    An emitter may be thought of as a pipeline consisting of objects which can modify the declarations, and then write the output
-    to the webpage. An emitter is passed a collection of <abbr title="SuperScript.Common.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects, and the end of the process returns an
-    <abbr title="System.Web.IHtmlString"><code>IHtmlString</code></abbr> which contains the output of each declaration passed to this emitter.
+    An emitter may be thought of as a pipeline consisting of objects which can modify the declarations and then write the output
+    to the webpage. An emitter is passed a collection of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects, and the end of the process returns an
+    <abbr title="System.Web.IHtmlString"><code>IHtmlString</code></abbr> which contains the processed output of the collection of declarations passed to this emitter.
 </p>
 
 <p>
     Although the writing of an emitter's output is listed above as being the final step in the process, this is actually a two-stage process: when an emitter
-    receives the instruction to write its output, it must then process all declarations which pass through this emitting pipeline; once processed, the
+    receives the instruction to write its output it must then process all declarations which pass through this emitting pipeline; once processed, the
     <abbr title="System.Web.IHtmlString"><code>IHtmlString</code></abbr> is then compiled.
 </p>
 
@@ -79,6 +79,9 @@
         <p>
             The first stage in the emitter pipeline is passed the raw, currently-unmodified collection of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects,
             and returns a collection of <abbr title="SuperScript.Declarables.DeclarationBase"><code>DeclarationBase</code></abbr> objects.
+        </p>
+        <p>
+            This presents an opportunity to, for example, re-order the declarations.
         </p>
         <p><a href="#!/modifiers.collection-pre-modifier">Read the documentation</a></p>
         <p><a href="https://github.com/Supertext/SuperScript.Common/blob/master/Modifiers/Pre/CollectionPreModifier.cs" target="_blank">View this class on GitHub</a></p>
@@ -104,7 +107,7 @@
             passed to this emitter.
         </p>
         <p>
-            An example of the advantage which this stage offers is the possibility to minify JavaScript or to pre-compile HTML templates.
+            This presents an opportunity to, for example, minify JavaScript or to pre-compile HTML templates.
         </p>
         <p><a href="#!/modifiers.collection-post-modifier">Read the documentation</a></p>
         <p><a href="https://github.com/Supertext/SuperScript.Common/blob/master/Modifiers/Post/CollectionPostModifier.cs" target="_blank">View this class on GitHub</a></p>
@@ -128,8 +131,8 @@
             location.
         </p>
         <p>
-            For example, this stage could write the passed string to the local file system as a <em>*.js</em> file, then write a <code>&lt;script src="&hellip;"&gt;</code>
-            tag to the webpage which references the created <em>*.js</em> file.
+            For example, this stage could write the passed string to the local file system as a <em>.js</em> file, then write a <code>&lt;script src="&hellip;"&gt;</code>
+            tag to the webpage which references that file.
         </p>
         <p><a href="#!/modifiers.html-writer">Read the documentation</a></p>
         <p><a href="https://github.com/Supertext/SuperScript.Common/blob/master/Modifiers/Writers/HtmlWriter.cs" target="_blank">View this class on GitHub</a></p>
