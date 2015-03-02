@@ -30,7 +30,7 @@
     The base declaration is easily extendable to cover any other concerns.
 </p>
 <p>
-    For example, supposing a developer plans to write their entire CSS in the webpage's <code>&lt;head&gt;</code> section, yet the selecters
+    For example, suppose a developer plans to write their entire CSS in the webpage's <code>&lt;head&gt;</code> section, yet the selecters
     were declared throughout their server-side application: a declaration could be derived which allows the developer to programmatically (or using a
     container control) declare their CSS selecters to SuperScript, thus <em>gathering up</em> all these selecters into a single collection.
 </p>
@@ -47,7 +47,7 @@
         Placing all JavaScript declarations at an optimal location on a webpage
     </li>
     <li>
-        Moving declarations into an external file and writing a <code>&lt;script&gt;</code> tag on the webpage
+        Moving declarations from across an application into an external file and writing a <code>&lt;script&gt;</code> tag on the webpage
     </li>
 </ul>
 <p>
@@ -59,8 +59,12 @@
     specific location, typically immediately before the <code>&lt;/body&gt;</code> tag.
 </p>
 <p>
-    Furthermore, emitters also offer processing functionality which offers opportunities for modifying the collection of declarations, or
-    per-compiling HTML templates.
+    Emitters are configured with a series of classes which are typically provided out-of-the-box, though custom
+    implementations are easily built.
+</p>
+<p>
+    Furthermore, emitters also offer processing functionality which presents opportunities for modifying the collection of declarations, or
+    pre-compiling HTML templates.
 </p>
 
 <p>
@@ -72,16 +76,9 @@
 
 <p>
     SuperScript offers a variety of functionality and consequently consists of multiple, optional libraries. This page lists each of the current
-    projects along with a brief explanationof the functionality offered.
+    projects along with a brief explanationof the functionality offered: <a href="#!/current-projects">View the current projects</a>
 </p>
-<p>
-    <a href="#!/current-projects">View the current projects</a>
-</p>
-
 <p>
     Although SuperScript's functionality is divided across multiple libraries, the fundamentals are common to each. This page explains the core
-    concepts behind SuperScript.
-</p>
-<p>
-    <a href="#!/core-concepts">Read an explanation of the core concepts</a>
+    concepts behind SuperScript: <a href="#!/core-concepts">Read an explanation of the core concepts</a>
 </p>
