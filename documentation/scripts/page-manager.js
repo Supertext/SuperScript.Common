@@ -1,6 +1,7 @@
-var PageManager = function (win, doc) {
+var PageManager = function (win, doc, Sizzle) {
 
 	var self = this,
+		elmntContent = doc.getElementById("content"),
 		location = doc.location,
 		projectName = location.href.split("/")[3],
 		issueUrl = "https://github.com/Supertext/" + projectName + "/issues/new",
@@ -28,20 +29,26 @@ var PageManager = function (win, doc) {
 				xhr = new XMLHttpRequest();
 			}
 			return xhr;
+		},
+		addClass = function(node, cls) {
+			node.className = node.className + " " + cls;
+		},
+		removeClass = function(node, cls) {
+			var reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
+			node.className = node.className.replace(reg, " ");
 		};
 	
 		configureRouting = function() {
 			Routing.map("#!/:contentName(/:anchor)")
 				.before(function() {
-					Sizzle("#content").html("<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />");
-					Sizzle("li.active").removeClass("active");
+					elmntContent.innerHTML = "<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />";
+					removeClass(Sizzle("li.active")[0], "active");
 				})
 				.to(function() {
 					var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
 						anchor = this.params.anchor.value,
 						loadUrl = urlDirectory + specificPath,
-						elmntContent = doc.getElementById("content"),
-						elmntLink = Sizzle("a[href='#!/" + this.params.contentName.value + "']"),
+						elmntLink = Sizzle("a[href='#!/" + this.params.contentName.value + "']")[0],
 						xhr = createXhr();
 
 					xhr.onreadystatechange = function() {
@@ -63,12 +70,12 @@ var PageManager = function (win, doc) {
 					xhr.open('GET', loadUrl, true);
 					xhr.setRequestHeader("Content-type", "application/x-www-form-urlencode");
 					xhr.send();
-					
+
 					elmntContent.className = elmntContent.className + " " + this.params.contentName.value;
-					
+
 					if (elmntLink.length > 0) {
 						var elmntLi = elmntLink.parent("li");
-						elmntLi.addClass("active");
+						addClass(elmntLi, "active");
 						elmntLi.parents("li.dropdown").addClass("active");
 					}
 				});
@@ -79,7 +86,7 @@ var PageManager = function (win, doc) {
 			configureRouting();
 		}
 	};
-}(window, window.document);
+}(window, window.document, window.Sizzle);
 
 $(function() {
 	PageManager.Init();
