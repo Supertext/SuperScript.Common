@@ -12,7 +12,23 @@ var PageManager = function (win, doc) {
 		},
 		replaceAll = function (string, find, replace) {
 			return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-		}
+		},
+		createXHR = function() {
+			var xhr;
+			if (window.ActiveXObject) {
+				try {
+					xhr = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				catch(e) {
+					alert(e.message);
+					xhr = null;
+				}
+			}
+			else {
+				xhr = new XMLHttpRequest();
+			}
+			return xhr;
+		};
 	
 		configureRouting = function() {
 			Routing.map("#!/:contentName(/:anchor)")
@@ -25,9 +41,30 @@ var PageManager = function (win, doc) {
 						anchor = this.params.anchor.value,
 						loadUrl = urlDirectory + specificPath,
 						elmntContent = doc.getElementById("content"),
-						elmntLink = $("a[href='#!/" + this.params.contentName.value + "']");
+						elmntLink = $("a[href='#!/" + this.params.contentName.value + "']"),
+						xhr = createXHR();
 
-					$.ajax({
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState === 4 && xhr.status == 200) {
+							elmntContent.innerHTML = xhr.responseText;
+
+							SyntaxHighlighter.highlight();
+
+							if (typeof(anchor) !== "undefined") {
+								var elmntAnchor = doc.getElementById(anchor);
+								if (elmntAnchor !== null) {
+									elmntAnchor.scrollIntoView(true);
+								}
+							}
+						} else {
+							elmntContent.innerHTML = "<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>"
+						}
+					}
+					xhr.open('GET', loadUrl, true);
+					xhr.setRequestHeader("Content-type", "application/x-www-form-urlencode");
+					xhr.send();
+					
+					/*$.ajax({
 						dataType: "html",
 						type: "GET",
 						url: loadUrl,
@@ -46,7 +83,7 @@ var PageManager = function (win, doc) {
 						error: function (xmlHttpRequest, textStatus, errorThrown) {
 							$("#content").html("<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>");
 						}
-					});
+					});*/
 					
 					elmntContent.className = elmntContent.className + " " + this.params.contentName.value;
 					
