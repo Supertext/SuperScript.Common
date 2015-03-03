@@ -33,15 +33,15 @@ var PageManager = function (win, doc) {
 		configureRouting = function() {
 			Routing.map("#!/:contentName(/:anchor)")
 				.before(function() {
-					$("#content").html("<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />");
-					$("li.active").removeClass("active");
+					Sizzle("#content").html("<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />");
+					Sizzle("li.active").removeClass("active");
 				})
 				.to(function() {
 					var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
 						anchor = this.params.anchor.value,
 						loadUrl = urlDirectory + specificPath,
 						elmntContent = doc.getElementById("content"),
-						elmntLink = $("a[href='#!/" + this.params.contentName.value + "']"),
+						elmntLink = Sizzle("a[href='#!/" + this.params.contentName.value + "']"),
 						xhr = createXhr();
 
 					xhr.onreadystatechange = function() {
