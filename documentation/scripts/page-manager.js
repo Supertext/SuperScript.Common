@@ -31,9 +31,15 @@ var PageManager = function (win, doc, Sizzle) {
 			return xhr;
 		},
 		addClass = function(node, cls) {
+			if (typeof(node) === "undefined" || node === null) {
+				return;
+			}
 			node.className = node.className + " " + cls;
 		},
 		removeClass = function(node, cls) {
+			if (typeof(node) === "undefined" || node === null) {
+				return;
+			}
 			var reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
 			node.className = node.className.replace(reg, " ");
 		};
