@@ -61,7 +61,7 @@ var PageManager = function (win, doc, Sizzle) {
                 return null;
             }
             var p = currentNode.parentElement;
-            while (p !== null) {
+            while (typeof (p) !== "undefined" && p !== null) {
                 if (p.tagName.toLowerCase === tagName) {
                     if (typeof(cls) !== "undefined" && cls !== null && cls.length > 0 && (" " + p.className + " ").replace(/[\n\t]/g, " ").indexOf(" " + cls + " ") > -1) {
                         return p;
