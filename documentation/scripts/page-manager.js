@@ -34,6 +34,13 @@ var PageManager = function (win, doc, Sizzle) {
 			if (typeof(node) === "undefined" || node === null) {
 				return;
 			}
+			if (Object.prototype.toString.call(node) === "[object Array]") {
+				for (var i = 0, iMax = node.length; i < iMax; i++) {
+					var n = node[i];
+					n.className = n.className + " " + cls;
+				}
+				return;
+			}
 			node.className = node.className + " " + cls;
 		},
 		removeClass = function(node, cls) {
@@ -41,6 +48,12 @@ var PageManager = function (win, doc, Sizzle) {
 				return;
 			}
 			var reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
+			if (Object.prototype.toString.call(node) === "[object Array]") {
+				for (var i = 0, iMax = node.length; i < iMax; i++) {
+					n.className = n.className.replace(reg, " ");
+				}
+				return;
+			}
 			node.className = node.className.replace(reg, " ");
 		};
 	
