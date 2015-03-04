@@ -110,7 +110,7 @@ var PageManager = function (win, doc, Sizzle) {
                 if (typeof (elmntLink) !== "undefined") {
                     var elmntLi = getParentOfType(elmntLink, "li");
                     addClass(elmntLi, "active");
-                    getParentOfType(elmntLi, "li", "dropdown").addClass("active");
+                    addClass(getParentOfType(elmntLi, "li", "dropdown"), "active");
                 }
             });
     };
