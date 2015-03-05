@@ -1,4 +1,4 @@
-var PageManager = function (win, doc, Sizzle) {
+var PageManager = function (win, doc, $) {
 
     var self = this,
         elmntContent = doc.getElementById("content"),
@@ -27,69 +27,19 @@ var PageManager = function (win, doc, Sizzle) {
                 xhr = new XMLHttpRequest();
             }
             return xhr;
-        },
-        addClass = function(node, cls) {
-            if (typeof (node) === "undefined" || node === null) {
-                return;
-            }
-            if (Object.prototype.toString.call(node) === "[object Array]") {
-                for (var i = 0,
-                         iMax = node.length; i < iMax; i++) {
-                    var n = node[i];
-                    n.className = n.className + " " + cls;
-                }
-                return;
-            }
-            node.className = node.className + " " + cls;
-        },
-        removeClass = function(node, cls) {
-            if (typeof (node) === "undefined" || node === null) {
-                return;
-            }
-            var reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
-            if (Object.prototype.toString.call(node) === "[object Array]") {
-                for (var i = 0, iMax = node.length; i < iMax; i++) {
-                    var n = node[i];
-                    n.className = n.className.replace(reg, " ");
-                }
-                return;
-            }
-            node.className = node.className.replace(reg, " ");
-        },
-        getParentOfType = function(currentNode, tagName, cls) {
-            if (typeof (currentNode) === "undefined" || currentNode === null) {
-                return null;
-            }
-            var p = currentNode.parentElement,
-                tagName = tagName.toLowerCase;
-            while (typeof (p) !== "undefined" && p !== null) {
-                if (p.tagName.toLowerCase !== tagName) {
-                    p = p.parentElement;
-                    continue;
-                }
-                if (typeof (cls) !== "undefined" && cls !== null && cls.length > 0) {
-                    if ((" " + p.className + " ").replace(/[\n\t]/g, " ").indexOf(" " + cls + " ") > -1) {
-                        return p;
-                    }
-                    p = p.parentElement;
-                } else {
-                    return p;
-                }
-            }
-            return null;
         };
 
     configureRouting = function () {
         Routing.map("#!/:contentName(/:anchor)")
             .before(function () {
                 elmntContent.innerHTML = "<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />";
-                removeClass(Sizzle("li.active"), "active");
+                $("li.active").removeClass("active");
             })
             .to(function () {
                 var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
                     anchor = this.params.anchor.value,
                     loadUrl = urlDirectory + specificPath,
-                    elmntLink = Sizzle("a[href='#!/" + this.params.contentName.value + "']"),
+                    elmntLink = $("a[href='#!/" + this.params.contentName.value + "']"),
                     xhr = createXhr();
 
                 xhr.onreadystatechange = function () {
@@ -112,12 +62,12 @@ var PageManager = function (win, doc, Sizzle) {
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencode");
                 xhr.send();
 
-                elmntContent.className = elmntContent.className + " " + this.params.contentName.value;
+                elmntContent.addClass(this.params.contentName.value);
 
                 if (elmntLink.length > 0) {
-                    var elmntLi = getParentOfType(elmntLink[0], "li");
-                    addClass(elmntLi, "active");
-                    addClass(getParentOfType(elmntLi, "li", "dropdown"), "active");
+                    var elmntLi = elmntLink.parent("li");
+                    elmntLi.addClass("active");
+                    elmntLi.parents("li.dropdown", "active");
                 }
             });
     };
@@ -127,9 +77,9 @@ var PageManager = function (win, doc, Sizzle) {
             configureRouting();
         }
     };
-}(window, window.document, window.Sizzle);
+}(window, window.document, jQuery);
 
-$(function() {
+$(function () {
     PageManager.Init();
     Routing.root("#!/index");
     Routing.listen();
