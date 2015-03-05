@@ -67,7 +67,7 @@ var PageManager = function (win, doc, $) {
                 if (elmntLink.length > 0) {
                     var elmntLi = elmntLink.parent("li");
                     elmntLi.addClass("active");
-                    elmntLi.parents("li.dropdown", "active");
+                    elmntLi.parents("li.dropdown").addClass("active");
                 }
             });
     };
