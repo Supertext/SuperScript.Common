@@ -48,8 +48,8 @@ var PageManager = function (win, doc, Sizzle) {
             }
             var reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
             if (Object.prototype.toString.call(node) === "[object Array]") {
-                for (var i = 0,
-                         iMax = node.length; i < iMax; i++) {
+                for (var i = 0, iMax = node.length; i < iMax; i++) {
+                    var n = node[i];
                     n.className = n.className.replace(reg, " ");
                 }
                 return;
@@ -83,7 +83,7 @@ var PageManager = function (win, doc, Sizzle) {
         Routing.map("#!/:contentName(/:anchor)")
             .before(function () {
                 elmntContent.innerHTML = "<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />";
-                removeClass(Sizzle("li.active")[0], "active");
+                removeClass(Sizzle("li.active"), "active");
             })
             .to(function () {
                 var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
