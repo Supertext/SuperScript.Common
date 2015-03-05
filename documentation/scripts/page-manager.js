@@ -56,14 +56,16 @@ var PageManager = function (win, doc, Sizzle) {
 		    }
 		    node.className = node.className.replace(reg, " ");
 		},
-        getParentOfType = function(currentNode, tagName, cls) {
+        getParentOfType = function (currentNode, tagName, cls) {
             if (typeof (currentNode) === "undefined" || currentNode === null) {
                 return null;
             }
             var p = currentNode.parentElement;
             while (typeof (p) !== "undefined" && p !== null) {
                 if (p.tagName.toLowerCase === tagName) {
-                    if (typeof(cls) !== "undefined" && cls !== null && cls.length > 0 && (" " + p.className + " ").replace(/[\n\t]/g, " ").indexOf(" " + cls + " ") > -1) {
+                    if (typeof (cls) !== "undefined" && cls !== null && cls.length > 0 && (" " + p.className + " ").replace(/[\n\t]/g, " ").indexOf(" " + cls + " ") > -1) {
+                        return p;
+                    } else {
                         return p;
                     }
                 }
@@ -72,20 +74,20 @@ var PageManager = function (win, doc, Sizzle) {
             return null;
         };
 
-    configureRouting = function() {
+    configureRouting = function () {
         Routing.map("#!/:contentName(/:anchor)")
-            .before(function() {
+            .before(function () {
                 elmntContent.innerHTML = "<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />";
                 removeClass(Sizzle("li.active")[0], "active");
             })
-            .to(function() {
+            .to(function () {
                 var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
                     anchor = this.params.anchor.value,
                     loadUrl = urlDirectory + specificPath,
                     elmntLink = Sizzle("a[href='#!/" + this.params.contentName.value + "']"),
                     xhr = createXhr();
 
-                xhr.onreadystatechange = function() {
+                xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status == 200) {
                         elmntContent.innerHTML = xhr.responseText;
 
@@ -107,8 +109,8 @@ var PageManager = function (win, doc, Sizzle) {
 
                 elmntContent.className = elmntContent.className + " " + this.params.contentName.value;
 
-                if (typeof (elmntLink) !== "undefined") {
-                    var elmntLi = getParentOfType(elmntLink, "li");
+                if (elmntLink.length > 0) {
+                    var elmntLi = getParentOfType(elmntLink[0], "li");
                     addClass(elmntLi, "active");
                     addClass(getParentOfType(elmntLi, "li", "dropdown"), "active");
                 }
@@ -122,7 +124,7 @@ var PageManager = function (win, doc, Sizzle) {
     };
 }(window, window.document, window.Sizzle);
 
-$(function() {
+$(function () {
     PageManager.Init();
     Routing.root("#!/index");
     Routing.listen();
