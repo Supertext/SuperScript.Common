@@ -62,7 +62,7 @@ var PageManager = function (win, doc, $) {
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencode");
                 xhr.send();
 
-                elmntContent.addClass(this.params.contentName.value);
+                elmntContent.className = this.params.contentName.value;
 
                 if (elmntLink.length > 0) {
                     var elmntLi = elmntLink.parent("li");
