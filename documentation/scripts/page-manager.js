@@ -13,38 +13,27 @@ var PageManager = function (win, doc, $) {
         },
         replaceAll = function(string, find, replace) {
             return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
-        },
-        createXhr = function() {
-            var xhr;
-            if (window.ActiveXObject) {
-                try {
-                    xhr = new ActiveXObject("Microsoft.XMLHTTP");
-                } catch (e) {
-                    alert(e.message);
-                    xhr = null;
-                }
-            } else {
-                xhr = new XMLHttpRequest();
-            }
-            return xhr;
         };
 
-    configureRouting = function () {
+    configureRouting = function() {
         Routing.map("#!/:contentName(/:anchor)")
-            .before(function () {
+            .before(function() {
                 elmntContent.innerHTML = "<img src=\"https://assets-cdn.github.com/images/spinners/octocat-spinner-32.gif\" alt=\"loading...\" class=\"center-block\" />";
                 $("li.active").removeClass("active");
             })
-            .to(function () {
+            .to(function() {
                 var specificPath = replaceAll(this.params.contentName.value, ".", "/") + ".html",
                     anchor = this.params.anchor.value,
                     loadUrl = urlDirectory + specificPath,
-                    elmntLink = $("a[href='#!/" + this.params.contentName.value + "']"),
-                    xhr = createXhr();
+                    elmntLink = $("a[href='#!/" + this.params.contentName.value + "']");
 
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status == 200) {
-                        elmntContent.innerHTML = xhr.responseText;
+                $.ajax({
+                    dataType: "html",
+                    type: "GET",
+                    url: loadUrl,
+                    success: function (data) {
+
+                        elmntContent.innerHTML = data;
 
                         SyntaxHighlighter.highlight();
 
@@ -54,13 +43,11 @@ var PageManager = function (win, doc, $) {
                                 elmntAnchor.scrollIntoView(true);
                             }
                         }
-                    } else {
-                        elmntContent.innerHTML = "<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>"
+                    },
+                    error: function(xmlHttpRequest, textStatus, errorThrown) {
+                        elmntContent.innerHTML = "<p>Sorry, it looks like an error occurred!</p><p>How about letting us know by creating an <a href=\"" + issueUrl + "\" target=\"_blank\">issue</a>?</p>";
                     }
-                }
-                xhr.open('GET', loadUrl, true);
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencode");
-                xhr.send();
+                });
 
                 elmntContent.className = this.params.contentName.value;
 
