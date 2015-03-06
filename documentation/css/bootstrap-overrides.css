@@ -7,16 +7,24 @@ body {
 }
 
 a:link {
+    border-bottom: 0;
 	text-decoration: none;
 }
-a:link > abbr > code {
+
+#content a:hover {
+    border-bottom: 1px solid #337AB7;
+    text-decoration: none;
+}
+
+#content abbr > code > a:link {
     border-bottom: 1px solid #337AB7;
     -ms-border-bottom-left-radius: 0;
     border-bottom-left-radius: 0;
     -ms-border-bottom-right-radius: 0;
     border-bottom-right-radius: 0;
 }
-a:hover > abbr > code {
+
+#content abbr > code> a:hover {
 	border-bottom-color: #C7254E;
 	color: #337AB7 !important;
 	cursor: pointer;
@@ -27,11 +35,29 @@ a:not([href]) {
     text-decoration: none;
 }
 
-a.link-nuget:after {
-    content: url('data:image/gif;base64,R0lGODlhFAAUAPepAP///////v///f///P7//v7//Pr9/Pj9/PD6+uz4++v4+u34++j4+ef3+ujz++X1+OL1+uD0+N71+d70+enw+tvx9+Ht+dHv9crt9cfs9tXn98Ls9sHr9sHp9brn8rvn873n8rvn9M7g9bbi76nh8r/a867d8LLc7rPY8p/e8aXa7qXZ7pPc8pbc8aTY7qXY7pza9JjZ9Yra8onZ8ZDV7pPT8InR8p3L7qDI7aDH7X7M8XbP7WDL8G7F8IPA6X6/6WLG617G6na/4nu754i351TG7lPF7mG/707D7mO86my25VO96G225lu57FS652q05Xas5Ee550e56EC66Vqs4j2z5lCt40+t4k+s4kqt5E6s4kyr51So4USu31Go4TCw50ip4kWo50um4Das5DGr5DCp4Uqi31Od4Dqj5Tej3zij3zOi5Suj3jaf5Dud1S+f5iyh3Dec3Syf3TKb4zCc3xSk4kiU3iCc3CiU2jWP2x6V2TeL2i+L2hqQ2AuU1hmL2ByL1yeH2huI3RKL1hGJ1hKJ1hyF2RKI1g6I1g2H1RSE2wqG1Q2F1AyF1QiE1AqE1AWE1AaD1ACG0gSC1AKB0wGB0xx31AGA0wCA0wB/0wF/0wJ/0w941QB50gVz0wZx0QRy0gBy0QBs0gBr0QBr0gBmzwBkzgBkzwBhzgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAUHAKkALAAAAAAUABQAAAj/AFMx8CAglcGDCBOmerCkDg0ACiMaHOFHUheIqQIIKMCR44AACA8IcXMilQAMLGTImMGSZYsLIA0CCADAQAojX8iQGcNzTBUkPEgUPAiAxJQ0XABtYsSUaR8pRUJgTKUAiBoLABzgWUSoK6FGhaLsQHAwQ5khANL+yOS16yM5QUAcDHHHTFoAXia17arHiYqDH+BoYoJCSaSujjBhQoToj5UXgOE0okS566U4T6gcCsUJy4rIjdpW8nFXgyVPVz4bDBy6KyQxd9OW+KRFdaoQbBIN2t3pRuy0fMC4ONiBDqjjoFDl+A0gTxYTBydsKUWq+qkzv0UYSlLhIAEbikyJOhovCsddCnvW1JiaCkIPQaPij0JlhwiUQG90JFDYIEaTMACG0cYcaBwBwwISBSDBBhtw4KCDEcSUSkAAOw==') /*../images/NuGet_project_logo-20px.gif*/;
-    height: 20px;
-    margin-left: 6px;
-    position: absolute;
+#content a[href^="http"][target="_blank"] {
+  background-image: url('data:image/gif;base64,R0lGODlhBwAIAPIHAGaZ/2aZzDOZmTNmzDNmmWbMzMzM/////yH5BAUHAAcALAAAAAAHAAgAAAMWeHomtAqQIcYITKgyVO/a0XlkSVlhAgA7') /*../images/external.gif*/;
+  background-position: right top;
+  background-repeat: no-repeat;
+  padding-right: 9px;
+  white-space: nowrap;
+}
+
+#content a[href^="http"][target="_blank"]:hover {
+  background-image: url('data:image/gif;base64,R0lGODlhBwAIAKIEAGZmZpmZmczMzDMzAP///wAAAAAAAAAAACH5BAUAAAQALAAAAAAHAAgAAAMUSEoCsyqAOQMDERPMld7eolGTkgAAOw==') /*../images/external.gif*/;
+}
+
+#content code a[href^="http"][target="_blank"] {
+    background-image: url('data:image/gif;base64,R0lGODlhBwAIAPMJAP+Zmf9mmcxmmcwzZswzM8wAZswAM//MzGYAM////wAAAAAAAAAAAAAAAAAAAAAAACH5BAUHAAkALAAAAAAHAAgAAAQaMMl0BpoyjEEKARQhCYNUlmKSJiU7pd5gtBEAOw==');
+    background-position: right top;
+    background-repeat: no-repeat;
+    color: #C7254E;
+    padding-right: 9px;
+    white-space: nowrap;
+}
+
+#content code a[href^="http"][target="_blank"]:hover {
+    background-image: url('data:image/gif;base64,R0lGODlhBwAIAPIHAGaZ/2aZzDOZmTNmzDNmmWbMzMzM/////yH5BAUHAAcALAAAAAAHAAgAAAMWeHomtAqQIcYITKgyVO/a0XlkSVlhAgA7');
 }
 
 attr > code {
