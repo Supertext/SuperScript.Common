@@ -11,7 +11,7 @@ namespace SuperScript
     /// </summary>
     public class HttpInitialiser : IHttpModule
     {
-        private bool _initialised;
+        private static bool _initialised;
         private readonly object _obj = new object();
 
 
@@ -27,13 +27,15 @@ namespace SuperScript
 
         public void Init(HttpApplication context)
         {
-            if (_initialised) return;
-
             lock (_obj)
             {
-                if (_initialised) return;
+                if (_initialised)
+                {
+                    return;
+                }
 
                 InitEvents(context);
+
                 _initialised = true;
             }
         }
