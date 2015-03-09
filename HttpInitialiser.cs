@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Web;
-using SuperScript.Configuration;
+﻿using SuperScript.Configuration;
 using SuperScript.Declarables;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Web;
+
 
 namespace SuperScript
 {
     /// <summary>
-    /// This class is instantiated for each HTTP request. [This is wired-up in the web.config.]
+    /// This class is instantiated for each HTTP request, and is used to instantiate the core collections required by SuperScript.
     /// </summary>
     public class HttpInitialiser : IHttpModule
     {
-        private static bool _initialised;
-        private readonly object _obj = new object();
+        private readonly object _initSync = new object();
+        private static int _initialized;
 
 
         #region IHttpModule Members
@@ -27,39 +28,28 @@ namespace SuperScript
 
         public void Init(HttpApplication context)
         {
-            lock (_obj)
+            // Prevent the initialization pipeline to be executed several times.
+            if (Interlocked.CompareExchange(ref _initialized, 0, 0) == 0)
             {
-                if (_initialised)
+                lock (_initSync)
                 {
-                    return;
+                    if (Interlocked.CompareExchange(ref _initialized, 0, 0) == 0)
+                    {
+                        OneTimeInitialization(context);
+                        Interlocked.Exchange(ref _initialized, 1);
+                    }
                 }
-
-                InitEvents(context);
-
-                _initialised = true;
             }
         }
 
 
-        /// <summary>
-        /// Custom handler for wiring-up events.
-        /// </summary>
-        /// <param name="context">
-        /// The current HttpContext.
-        /// </param>
-        public void InitEvents(HttpApplication context)
-        {
-            context.BeginRequest += OnBeginRequest;
-        }
-
-
-        public virtual void OnBeginRequest(object s, EventArgs e)
+        protected virtual void OneTimeInitialization(HttpApplication context)
         {
             // Initialise the collection of Declarations for this request
             Declarations.Collection = new Collection<DeclarationBase>();
 
-			// Set all instances of BundledEmitter
-	        Declarations.EmitterBundles = Settings.Instance.EmitterBundles;
+            // Set all instances of BundledEmitter
+            Declarations.EmitterBundles = Settings.Instance.EmitterBundles;
 
             // Set all instances of IEmitter
             Declarations.Emitters = Settings.Instance.Emitters;
