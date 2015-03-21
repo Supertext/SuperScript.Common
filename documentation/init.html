@@ -39,7 +39,8 @@
 </pre>
 
 <p>
-  There are two recommended methods for achieving this.
+  There are two recommended methods for achieving this, though these are only required if not installed via NuGet, or if the 
+  NuGet-added configuration is removed.
 </p>
 
 <h3 id="config-init">Config File</h3>
@@ -78,7 +79,7 @@
 <h3 id="nuget">Installation via NuGet</h3>
 
 <p>
-  If SuperScript.Common is installed via NuGet then a class, <em>SuperScriptConfig</em>, is added to the <em>App_Start</em> folder.
+  If SuperScript.Common is installed via NuGet then a class, <code>SuperScriptConfig</code>, is added to the <em>App_Start</em> folder.
   This class, which uses <a href="https://github.com/davidebbo/WebActivator" target="_blank">WebActivator</a> to run some initialisation
   code when the application starts, contains two methods:
 </p>
@@ -87,16 +88,20 @@
   <dt><code>void RegisterModules()</code></dt>
   <dd>
     <p>
-      This method is run before the global.asax's <em>Application_Start</em> event, and is used to add the 
-      <em>HttpInitialiser</em> detailed above.
+      This method is run before the global.asax's <code>Application_Start</code> event, and is used to add the 
+      <code>HttpInitialiser</code> detailed above.
     </p>
   </dd>
   <dt><code>void RegisterDefaults()</code></dt>
   <dd>
     <p>
-      This method is called <em>after</em> the global.asax's <em>Application_Start</em> event. When installed, this method
+      This method is called <em>after</em> the global.asax's <code>Application_Start</code> event. When installed, this method
       contains no code but presents a good location to declare emitters and any default declarations, for example, global 
       JavaScript variables.
     </p>
   </dd>
 </ul>
+
+<p>
+  Therefore, if installed via NuGet, no additional configuration code is required.
+</p>
