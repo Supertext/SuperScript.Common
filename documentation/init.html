@@ -74,3 +74,29 @@
     SuperScript.Declarations.Emitters = SuperScript.Configuration.Settings.Instance.Emitters;
   }
 </pre>
+
+<h3 id="nuget">Installation via NuGet</h3>
+
+<p>
+  If SuperScript.Common is installed via NuGet then a class, <em>SuperScriptConfig</em>, is added to the <em>App_Start</em> folder.
+  This class, which uses <a href="https://github.com/davidebbo/WebActivator" target="_blank">WebActivator</a> to run some initialisation
+  code when the application starts, contains two methods:
+</p>
+
+<dl>
+  <dt><code>void RegisterModules()</code></dt>
+  <dd>
+    <p>
+      This method is run before the global.asax's <em>Application_Start</em> event, and is used to add the 
+      <em>HttpInitialiser</em> detailed above.
+    </p>
+  </dd>
+  <dt><code>void RegisterDefaults()</code></dt>
+  <dd>
+    <p>
+      This method is called <em>after</em> the global.asax's <em>Application_Start</em> event. When installed, this method
+      contains no code but presents a good location to declare emitters and any default declarations, for example, global 
+      JavaScript variables.
+    </p>
+  </dd>
+</ul>
