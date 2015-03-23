@@ -49,7 +49,7 @@ var PageManager = function (win, doc, $) {
                     }
                 });
 
-                elmntContent.className = elmntContent.className + " " + this.params.contentName.value;
+                elmntContent.className = "col-xs-12 " + this.params.contentName.value;
 
                 if (elmntLink.length > 0) {
                     var elmntLi = elmntLink.parent("li");
