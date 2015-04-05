@@ -76,7 +76,7 @@
   }
 </pre>
 
-<h3 id="nuget">Installation via NuGet</h3>
+<h3 id="nuget">Installation of SuperScript.Common via NuGet</h3>
 
 <p>
   If SuperScript.Common is installed via NuGet then a class, <code>SuperScriptConfig</code>, is added to the <em>App_Start</em> folder.
@@ -85,18 +85,21 @@
 </p>
 
 <dl>
-  <dt><code>void RegisterModules()</code></dt>
-  <dd>
-    <p>
-      This method is run before the global.asax's <code>Application_Start</code> event, and is used to add the 
-      <code>HttpInitialiser</code> detailed above.
-    </p>
-  </dd>
   <dt><code>void RegisterDefaults()</code></dt>
   <dd>
     <p>
+      This method is run before the global.asax's <code>Application_Start</code> event, and is used to include the 
+      <code>HttpInitialiser</code> detailed above.
+    </p>
+    <p>
+      This method presents a good location to declare emitters.
+    </p>
+  </dd>
+  <dt><code>void PostInit()</code></dt>
+  <dd>
+    <p>
       This method is called <em>after</em> the global.asax's <code>Application_Start</code> event. When installed, this method
-      contains no code but presents a good location to declare emitters and any default declarations, for example, global 
+      contains no code but presents a good location to declare any default declarations, for example, global 
       JavaScript variables.
     </p>
   </dd>
@@ -104,4 +107,9 @@
 
 <p>
   Therefore, if installed via NuGet, no additional configuration code is required.
+</p>
+
+<p>
+  If the SuperScript.Common NuGet package is uninstalled, the <code>SuperScriptConfig</code> class will be deleted. This 
+  needs to be kept in mind if non-SuperScript-related code is added to this file.
 </p>
