@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using SuperScript.Emitters;
+using SuperScript.ExtensionMethods;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using SuperScript.Emitters;
-using SuperScript.ExtensionMethods;
 
 namespace SuperScript.Configuration
 {
@@ -49,6 +49,27 @@ namespace SuperScript.Configuration
 	    /// Gets or sets a collection containing implementations of <see cref="IEmitter"/>.
 	    /// </summary>
 	    public List<IEmitter> Emitters { get; set; }
+
+
+        /// <summary>
+        /// Gets whether <c>debug</c> is set to <c>true</c> or <c>false</c> in the config file.
+        /// </summary>
+        private static bool? _isDebuggingEnabled;
+        public static bool IsDebuggingEnabled
+        {
+            get
+            {
+                if (_isDebuggingEnabled.HasValue)
+                {
+                    return _isDebuggingEnabled.Value;
+                }
+
+                var compilationSection = ConfigurationManager.GetSection(@"system.web/compilation") as System.Web.Configuration.CompilationSection;
+                _isDebuggingEnabled = compilationSection == null || compilationSection.Debug;
+
+                return _isDebuggingEnabled.Value;
+            }
+        }
 
         #endregion
 
