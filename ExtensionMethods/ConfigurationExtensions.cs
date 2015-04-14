@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection;
-using SuperScript.Configuration;
+﻿using SuperScript.Configuration;
 using SuperScript.Emitters;
 using SuperScript.Modifiers;
 using SuperScript.Modifiers.Converters;
 using SuperScript.Modifiers.Post;
 using SuperScript.Modifiers.Pre;
 using SuperScript.Modifiers.Writers;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace SuperScript.ExtensionMethods
 {
@@ -149,9 +148,12 @@ namespace SuperScript.ExtensionMethods
                 return false;
             }
 
-            return emitMode == (System.Web.HttpContext.Current.IsDebuggingEnabled
-                                    ? EmitMode.DebugOnly
-                                    : EmitMode.LiveOnly);
+            if (Settings.IsDebuggingEnabled)
+            {
+                return emitMode == EmitMode.DebugOnly;
+            }
+
+            return emitMode == EmitMode.LiveOnly;
         }
 
 

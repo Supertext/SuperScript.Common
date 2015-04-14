@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using SuperScript.Declarables;
+﻿using SuperScript.Declarables;
 using SuperScript.Modifiers.Pre;
+using System;
+using System.Collections.Generic;
 
 namespace SuperScript.Modifiers
 {
@@ -13,7 +12,7 @@ namespace SuperScript.Modifiers
     {
         #region Properties
 
-        private Lazy<bool> _isDebug = new Lazy<bool>(HttpContext.Current.IsDebuggingEnabled);
+        private readonly Lazy<bool> _isDebug = new Lazy<bool>(Configuration.Settings.IsDebuggingEnabled);
 
 
         /// <summary>
